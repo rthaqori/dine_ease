@@ -17,19 +17,28 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { OrderType } from "@/types/enums";
 
 export default function CartSummaryContent() {
-  const { data, isLoading, error } = useCartSummary();
   const searchParams = useSearchParams();
-
   const orderType = searchParams.get("orderType");
+  const deliveryAddressId = searchParams.get("deliveryAddressId");
+
+  if (!orderType) return <div>Error....</div>;
+
+  const { data, isLoading, error } = useCartSummary({
+    orderType: orderType as OrderType,
+    addressId: deliveryAddressId!,
+  });
+
+  console.log("summary data", data);
+
   const tableNumber = searchParams.get("tableNumber")
     ? Number(searchParams.get("tableNumber"))
     : undefined;
 
   const specialInstructions = searchParams.get("specialInstructions");
   const paymentMethod = searchParams.get("paymentMethod");
-  const deliveryAddressId = searchParams.get("deliveryAddressId");
 
   const orderData = {
     orderType,
@@ -59,10 +68,9 @@ export default function CartSummaryContent() {
       specialInstructions: data.specialInstructions ?? undefined,
 
       paymentMethod:
-        data.paymentMethod === "CASH" ||
-        data.paymentMethod === "CARD" ||
-        data.paymentMethod === "ONLINE" ||
-        data.paymentMethod === "WALLET"
+        data.paymentMethod === "COD" ||
+        data.paymentMethod === "ESEWA" ||
+        data.paymentMethod === "KHALTI"
           ? data.paymentMethod
           : undefined,
 
@@ -140,11 +148,13 @@ export default function CartSummaryContent() {
                       Delivery Address
                     </h3>
                     <p className="text-gray-600 mt-1">
-                      123 Main Street, Suite 100
+                      {summary.deliveryAddress.street},{" "}
+                      {summary.deliveryAddress.city}
                       <br />
-                      New York, NY 10001
+                      {summary.deliveryAddress.state},{" "}
+                      {summary.deliveryAddress.postalCode}
                       <br />
-                      United States
+                      {summary.deliveryAddress.country}
                     </p>
                   </div>
                 </div>
@@ -155,11 +165,9 @@ export default function CartSummaryContent() {
                       Contact Information
                     </h3>
                     <p className="text-gray-600 mt-1">
-                      John Doe
+                      {summary.deliveryAddress.name}
                       <br />
-                      (123) 456-7890
-                      <br />
-                      john@example.com
+                      +977 {summary.deliveryAddress.phone}
                     </p>
                   </div>
                 </div>
@@ -196,7 +204,8 @@ export default function CartSummaryContent() {
                         <Image
                           src={item.imageUrl}
                           alt={item.name}
-                          fill
+                          height={80}
+                          width={80}
                           className="object-cover"
                         />
                       </div>

@@ -34,10 +34,9 @@ enum PaymentStatus {
 }
 
 enum PaymentMethod {
-  CASH
-  CARD
-  ONLINE
-  WALLET
+  COD
+  ESEWA
+  KHALTI
 }
 
 enum OrderType {
@@ -64,6 +63,16 @@ enum PreparationStation {
   GRILL_STATION
 }
 
+enum NotificationType {
+  ORDER_READY
+  ORDER_PREPARING
+  ORDER_SERVED
+  DELIVERY_SENT
+  TAKEAWAY_READY
+  ORDER_CANCELLED
+  GENERAL
+}
+
 model User {
   id        String    @id @default(cuid())
   name      String
@@ -73,10 +82,14 @@ model User {
   role      UserRole  @default(USER)
   addresses Address[]
 
+  loyalityPoints Int @default(0)
+
   accounts     Account[]
   carts        Cart[]
   orders       Order[]
   reservations Reservation[]
+
+  notifications Notification[]
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -103,6 +116,8 @@ model Account {
 model Address {
   id         String  @id @default(cuid())
   userId     String
+  name       String
+  phone      String
   street     String
   city       String
   state      String
@@ -208,8 +223,9 @@ model Order {
   cancelledAt        DateTime?
   cancellationReason String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  notifications Notification[]
 
   @@index([userId])
   @@index([status])
@@ -371,4 +387,24 @@ model OrderStationAssignment {
   @@index([station])
   @@index([status])
   @@index([assignedTo])
+}
+
+model Notification {
+  id      String           @id @default(cuid())
+  userId  String
+  orderId String?
+  type    NotificationType
+  title   String
+  message String
+  isRead  Boolean          @default(false)
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([orderId])
+  @@index([isRead])
 }

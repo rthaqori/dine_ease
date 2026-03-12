@@ -1,5 +1,7 @@
 // types/address.ts
 export interface CreateAddressRequest {
+  name: string;
+  phone: string;
   street: string;
   city: string;
   state: string;
@@ -9,6 +11,8 @@ export interface CreateAddressRequest {
 }
 
 export interface UpdateAddressRequest {
+  name?: string;
+  phone?: string;
   street?: string;
   city?: string;
   state?: string;
@@ -19,6 +23,8 @@ export interface UpdateAddressRequest {
 
 export interface AddressResponse {
   id: string;
+  name: string;
+  phone: string;
   userId: string;
   street: string;
   city: string;

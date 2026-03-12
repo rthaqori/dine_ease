@@ -1,12 +1,12 @@
-import { OrderStatus, PaymentMethod } from "./enums";
+import { OrderStatus, OrderType, PaymentMethod } from "./enums";
 
 // types/order.ts
 export interface PlaceOrderRequest {
-  orderType?: "DINE_IN" | "TAKEAWAY" | "DELIVERY";
+  orderType?: OrderType;
   tableNumber?: number;
   deliveryAddressId?: string;
   specialInstructions?: string;
-  paymentMethod?: "CASH" | "CARD" | "ONLINE" | "WALLET";
+  paymentMethod?: "COD" | "ESEWA" | "KHALTI";
 }
 
 export interface OrderItemSummary {

@@ -15,8 +15,8 @@ export const CheckoutForm = () => {
   const [tableNumber, setTableNumber] = useState("");
   const [specialInstructions, setSpecialInstructions] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<
-    "CASH" | "CARD" | "ONLINE" | "WALLET"
-  >("CASH");
+    "COD" | "ESEWA" | "KHALTI"
+  >("COD");
   const [deliveryAddressId, setDeliveryAddressId] = useState<string>("");
 
   const orderData = {
@@ -29,12 +29,15 @@ export const CheckoutForm = () => {
   };
 
   const params = new URLSearchParams(
-    Object.entries(orderData).reduce((acc, [key, value]) => {
-      if (value !== undefined && value !== "") {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {} as Record<string, string>)
+    Object.entries(orderData).reduce(
+      (acc, [key, value]) => {
+        if (value !== undefined && value !== "") {
+          acc[key] = String(value);
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    ),
   );
 
   const canPlaceOrder = () => {
@@ -106,7 +109,7 @@ export const CheckoutForm = () => {
       <div>
         <h3 className="text-lg font-semibold mb-3">Payment Method</h3>
         <div className="grid grid-cols-2 gap-3">
-          {(["CASH", "CARD", "ONLINE", "WALLET"] as const).map((method) => (
+          {(["COD", "ESEWA", "KHALTI"] as const).map((method) => (
             <button
               key={method}
               type="button"

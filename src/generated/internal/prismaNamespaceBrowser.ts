@@ -64,7 +64,8 @@ export const ModelName = {
   Table: 'Table',
   Inventory: 'Inventory',
   StaffShift: 'StaffShift',
-  OrderStationAssignment: 'OrderStationAssignment'
+  OrderStationAssignment: 'OrderStationAssignment',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -90,6 +91,7 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   password: 'password',
   role: 'role',
+  loyalityPoints: 'loyalityPoints',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -112,6 +114,8 @@ export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeo
 export const AddressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  name: 'name',
+  phone: 'phone',
   street: 'street',
   city: 'city',
   state: 'state',
@@ -312,6 +316,21 @@ export const OrderStationAssignmentScalarFieldEnum = {
 } as const
 
 export type OrderStationAssignmentScalarFieldEnum = (typeof OrderStationAssignmentScalarFieldEnum)[keyof typeof OrderStationAssignmentScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  orderId: 'orderId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {

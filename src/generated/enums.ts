@@ -45,10 +45,9 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
 export const PaymentMethod = {
-  CASH: 'CASH',
-  CARD: 'CARD',
-  ONLINE: 'ONLINE',
-  WALLET: 'WALLET'
+  COD: 'COD',
+  ESEWA: 'ESEWA',
+  KHALTI: 'KHALTI'
 } as const
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
@@ -85,3 +84,16 @@ export const PreparationStation = {
 } as const
 
 export type PreparationStation = (typeof PreparationStation)[keyof typeof PreparationStation]
+
+
+export const NotificationType = {
+  ORDER_READY: 'ORDER_READY',
+  ORDER_PREPARING: 'ORDER_PREPARING',
+  ORDER_SERVED: 'ORDER_SERVED',
+  DELIVERY_SENT: 'DELIVERY_SENT',
+  TAKEAWAY_READY: 'TAKEAWAY_READY',
+  ORDER_CANCELLED: 'ORDER_CANCELLED',
+  GENERAL: 'GENERAL'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

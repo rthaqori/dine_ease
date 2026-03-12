@@ -1,4 +1,3 @@
-// app/api/orders/place/route.ts
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
@@ -9,7 +8,7 @@ interface PlaceOrderRequest {
   tableNumber?: number;
   deliveryAddressId?: string;
   specialInstructions?: string;
-  paymentMethod?: "CASH" | "CARD" | "ONLINE" | "WALLET";
+  paymentMethod?: "COD" | "ESEWA" | "KHALTI";
 }
 
 export async function POST(request: NextRequest) {
@@ -194,7 +193,7 @@ export async function POST(request: NextRequest) {
     });
 
     // 9. If payment method is not CASH, create payment record
-    if (body.paymentMethod && body.paymentMethod !== "CASH") {
+    if (body.paymentMethod && body.paymentMethod !== "COD") {
       await db.payment.create({
         data: {
           orderId: order.id,
@@ -264,7 +263,7 @@ export async function POST(request: NextRequest) {
 function getNextSteps(orderType: string, paymentMethod?: string) {
   const steps: string[] = [];
 
-  if (!paymentMethod || paymentMethod === "CASH") {
+  if (!paymentMethod || paymentMethod === "COD") {
     steps.push("Payment will be collected upon pickup/delivery");
   } else {
     steps.push("Payment will be processed shortly");

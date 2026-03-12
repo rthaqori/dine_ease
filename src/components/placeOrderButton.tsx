@@ -19,6 +19,8 @@ export const PlaceOrderButton = ({
     mutate(orderData);
   };
 
+  console.log(orderData);
+
   return (
     <Button
       onClick={handlePlaceOrder}

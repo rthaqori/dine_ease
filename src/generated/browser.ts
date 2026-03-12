@@ -87,3 +87,8 @@ export type StaffShift = Prisma.StaffShiftModel
  * 
  */
 export type OrderStationAssignment = Prisma.OrderStationAssignmentModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

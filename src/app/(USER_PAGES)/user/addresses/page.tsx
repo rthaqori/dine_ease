@@ -14,9 +14,6 @@ import { AddressDialog } from "@/components/AddressDialog";
 export default function AddressesPage() {
   const { data, isLoading, error, refetch } = useAddresses();
 
-  /* -----------------------------
-   * LOADING STATE
-   * ----------------------------- */
   if (isLoading) {
     return (
       <div className="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8 py-8">
@@ -45,9 +42,6 @@ export default function AddressesPage() {
     );
   }
 
-  /* -----------------------------
-   * ERROR STATE
-   * ----------------------------- */
   if (error) {
     return (
       <div className="mx-auto w-full max-w-xl px-4 py-10">
@@ -73,9 +67,6 @@ export default function AddressesPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
-      {/* -----------------------------
-       * HEADER
-       * ----------------------------- */}
       <div className="mb-6 sm:mb-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
@@ -97,9 +88,6 @@ export default function AddressesPage() {
         </div>
       </div>
 
-      {/* -----------------------------
-       * EMPTY STATE
-       * ----------------------------- */}
       {addresses.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-14 px-6 text-center">
@@ -120,9 +108,6 @@ export default function AddressesPage() {
           </CardContent>
         </Card>
       ) : (
-        /* -----------------------------
-         * ADDRESSES GRID
-         * ----------------------------- */
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {addresses.map((address) => (
             <AddressCard key={address.id} address={address} />

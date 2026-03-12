@@ -21,7 +21,19 @@ interface UnavailableCartItem {
   reason: string;
 }
 
+interface DeliveryAddress {
+  id: string;
+  name: string;
+  phone: string;
+  city: string;
+  street: string;
+  state: string;
+  country: string;
+  postalCode: string;
+}
+
 interface CartSummary {
+  deliveryAddress: DeliveryAddress;
   itemCount: number;
   subtotal: number;
   vatAmount: number;
@@ -52,14 +64,24 @@ interface CartSummaryError {
   error?: string;
 }
 
-// hooks/useCartSummary.ts - SIMPLIFIED VERSION
+import { OrderType } from "@/types/enums";
 import { useQuery } from "@tanstack/react-query";
 
 const CART_QUERY_KEY = "cart";
 
-export const fetchCartSummary = async (): Promise<CartSummaryResponse> => {
+interface FetchCartSummaryPayload {
+  addressId?: string;
+  orderType: OrderType;
+}
+
+export const fetchCartSummary = async (
+  data: FetchCartSummaryPayload,
+): Promise<CartSummaryResponse> => {
   const response = await fetch("/api/cart/summary", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     credentials: "include",
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {
@@ -71,9 +93,9 @@ export const fetchCartSummary = async (): Promise<CartSummaryResponse> => {
 };
 
 // Just this one hook is enough to start
-export const useCartSummary = () => {
+export const useCartSummary = (data: FetchCartSummaryPayload) => {
   return useQuery<CartSummaryResponse, Error>({
     queryKey: [CART_QUERY_KEY, "summary"],
-    queryFn: fetchCartSummary,
+    queryFn: () => fetchCartSummary(data),
   });
 };

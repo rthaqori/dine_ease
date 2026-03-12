@@ -7,8 +7,23 @@ const roundToTwo = (num: number) =>
   Math.round((num + Number.EPSILON) * 100) / 100;
 const VAT_RATE = 0.13;
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
+    const { addressId, orderType } = await request.json();
+
+    console.log("AddressId", addressId);
+    console.log("OrderType", orderType);
+
+    if (orderType === "DELIVERY" && !addressId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Address Details is needed for delivery",
+        },
+        { status: 400 },
+      );
+    }
+
     const cookieStore = await cookies();
     let sessionId = cookieStore.get("cart_session_id")?.value;
     const user = await getUser();
@@ -79,21 +94,45 @@ export async function GET(request: NextRequest) {
 
     // Separate available and unavailable items
     const availableItems = cart.items.filter(
-      (item) => item.menuItem.isAvailable
+      (item) => item.menuItem.isAvailable,
     );
     const unavailableItems = cart.items.filter(
-      (item) => !item.menuItem.isAvailable
+      (item) => !item.menuItem.isAvailable,
     );
 
     // Calculate summary only for available items
     const subtotal = availableItems.reduce(
       (sum, item) => sum + item.quantity * item.menuItem.price,
-      0
+      0,
     );
 
     const vatAmount = subtotal * VAT_RATE;
     const discountAmount = 0; // Implement discount logic
     const totalAmount = subtotal + vatAmount - discountAmount;
+
+    const deliveryAddress = await db.address.findUnique({
+      where: { id: addressId },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        city: true,
+        country: true,
+        state: true,
+        postalCode: true,
+        street: true,
+      },
+    });
+
+    if (!deliveryAddress) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Address not found",
+        },
+        { status: 404 },
+      );
+    }
 
     const summary = {
       itemCount: availableItems.reduce((sum, item) => sum + item.quantity, 0),
@@ -101,6 +140,7 @@ export async function GET(request: NextRequest) {
       vatAmount: roundToTwo(vatAmount),
       discountAmount: roundToTwo(discountAmount),
       totalAmount: roundToTwo(totalAmount),
+      deliveryAddress,
       items: availableItems.map((item) => ({
         id: item.id,
         menuItemId: item.menuItemId,
@@ -149,7 +189,7 @@ export async function GET(request: NextRequest) {
         message: "Failed to retrieve cart summary",
         error: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

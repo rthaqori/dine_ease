@@ -49,6 +49,8 @@ export const menuItemFormSchema = z.object({
 });
 
 export const addressSchema = z.object({
+  name: z.string().min(3, "Name is required"),
+  phone: z.string().min(10, "Phone Number is required"),
   street: z.string().min(3, "Street is required"),
   city: z.string().min(2, "City is required"),
   state: z.string().min(2, "State is required"),
