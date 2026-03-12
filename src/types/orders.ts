@@ -43,7 +43,7 @@ export interface OrderItem {
   quantity: number;
   unitPrice: number;
   totalPrice: number;
-  specialInstructions?: string;
+  specialInstructions?: string | null;
   menuItem: {
     id: string;
     name: string;

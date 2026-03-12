@@ -1,6 +1,6 @@
 "use client";
 
-import { PlaceOrderButton } from "@/components/placeOrderButton";
+import { PlaceOrderButton } from "@/components/buttons/placeOrderButton";
 import { CartSummarySkeleton } from "@/components/skeletons/cartSummarySkeleton";
 import { useCartSummary } from "@/hooks/useSummary";
 import { formatCurrency } from "@/lib/formatters";

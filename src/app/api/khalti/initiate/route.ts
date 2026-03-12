@@ -1,148 +1,243 @@
+import db from "@/lib/db";
+import { OrderItem } from "@/types/orders";
 import { NextResponse } from "next/server";
+
+interface KhaltiProductDetail {
+  identity: string;
+  name: string;
+  total_price: number;
+  quantity: number;
+  unit_price: number;
+}
+
+function buildKhaltiProductDetails(items: OrderItem[]): KhaltiProductDetail[] {
+  return items.map((item) => ({
+    identity: item.menuItemId,
+    name: item.menuItem.name,
+    quantity: item.quantity,
+    unit_price: Math.round(item.unitPrice * 100),
+    total_price: Math.round(item.totalPrice * 100),
+  }));
+}
 
 export async function POST(req: Request) {
   console.log("🚀 Khalti payment initiation started");
+  console.log("Step 1: Starting...");
 
   try {
     // 1. Parse request body
+    console.log("Step 2: Parsing request body...");
     const body = await req.json();
-    const {
-      amount, // In NPR (will convert to paisa)
-      purchase_order_id, // Your unique order ID
-      purchase_order_name, // Product name
-      customer_info, // Optional customer details
-      return_url, // Where to redirect after payment
-      website_url, // Your website URL
-      amount_breakdown, // Optional amount breakdown
-      product_details, // Optional product details
-      merchant_extra, // Optional merchant data
-    } = body;
+    console.log("📦 Request body:", body);
 
-    console.log("📦 Request data:", {
-      amount,
-      purchase_order_id,
-      purchase_order_name,
+    const { orderId } = body;
+
+    if (!orderId) {
+      console.log("❌ Step 2.1: Order ID missing");
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Order ID missing",
+        },
+        { status: 400 },
+      );
+    }
+    console.log("✅ Step 2.2: Order ID present:", orderId);
+
+    // 2. Fetch order with details
+    console.log("Step 3: Fetching order from database...");
+    const order = await db.order.findUnique({
+      where: { id: orderId },
+      include: {
+        user: true,
+        items: {
+          include: {
+            menuItem: true,
+          },
+        },
+      },
     });
 
-    // 2. Validate required fields (per docs)
-    if (!amount) {
+    console.log("Step 3.1: Database query completed");
+
+    if (!order) {
+      console.log("❌ Step 3.2: Order not found in database");
       return NextResponse.json(
         {
-          error_key: "validation_error",
-          detail: "amount is required",
-        },
-        { status: 400 },
-      );
-    }
-    if (!purchase_order_id) {
-      return NextResponse.json(
-        {
-          error_key: "validation_error",
-          detail: "purchase_order_id is required",
-        },
-        { status: 400 },
-      );
-    }
-    if (!purchase_order_name) {
-      return NextResponse.json(
-        {
-          error_key: "validation_error",
-          detail: "purchase_order_name is required",
+          success: false,
+          message: "Order not found",
         },
         { status: 400 },
       );
     }
 
-    // 3. Check secret key
-    const secretKey = process.env.KHALTI_SECRET_KEY;
-    if (!secretKey) {
-      console.error("❌ KHALTI_SECRET_KEY not found");
+    console.log("✅ Step 3.3: Order found:", {
+      orderNumber: order.orderNumber,
+      finalAmount: order.finalAmount,
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+      itemCount: order.items?.length,
+    });
+
+    // Check if payment already exists and is completed
+    console.log("Step 4: Checking existing payments...");
+    const existingPayment = await db.payment.findFirst({
+      where: {
+        orderId,
+        status: "PAID",
+      },
+    });
+
+    if (existingPayment) {
+      console.log("❌ Step 4.1: Order already paid:", existingPayment);
       return NextResponse.json(
         {
+          success: false,
+          message: "Order already paid",
+        },
+        { status: 400 },
+      );
+    }
+    console.log("✅ Step 4.2: No existing paid payment found");
+
+    // 3. Check secret key
+    console.log("Step 5: Checking KHALTI_SECRET_KEY...");
+    const secretKey = process.env.KHALTI_SECRET_KEY;
+    if (!secretKey) {
+      console.error("❌ Step 5.1: KHALTI_SECRET_KEY not found");
+      return NextResponse.json(
+        {
+          success: false,
           error_key: "configuration_error",
           detail: "Khalti secret key not configured",
         },
         { status: 500 },
       );
     }
+    console.log(
+      "✅ Step 5.2: KHALTI_SECRET_KEY found (length:",
+      secretKey.length,
+      ")",
+    );
 
-    // 4. Validate secret key format (per docs)
-    // if (
-    //   !secretKey.startsWith("test_secret_key_") &&
-    //   !secretKey.startsWith("live_secret_key_")
-    // ) {
-    //   console.error("❌ Invalid secret key format");
-    //   return NextResponse.json(
-    //     {
-    //       error_key: "authentication_error",
-    //       detail:
-    //         "Invalid secret key format. Key should start with test_secret_key_ or live_secret_key_",
-    //     },
-    //     { status: 401 },
-    //   );
-    // }
-
-    // 5. Convert amount to paisa (CRITICAL: per docs)
-    const amountInPaisa = Math.round(Number(amount) * 100);
+    // 4. Convert amount to paisa
+    console.log("Step 6: Converting amount to paisa...");
+    const amountInPaisa = Math.round(Number(order.finalAmount) * 100);
+    console.log("💰 Amount in NPR:", order.finalAmount);
+    console.log("💰 Amount in paisa:", amountInPaisa);
 
     // Validate minimum amount (Rs 10 = 1000 paisa)
     if (amountInPaisa < 1000) {
+      console.log("❌ Step 6.1: Amount too low:", amountInPaisa);
       return NextResponse.json(
         {
+          success: false,
           error_key: "validation_error",
           detail: "Amount must be at least NPR 10 (1000 paisa)",
         },
         { status: 400 },
       );
     }
+    console.log("✅ Step 6.2: Amount validation passed");
 
-    // 6. Build request payload exactly as per docs
-    const khaltiPayload: any = {
-      return_url:
-        return_url || `${process.env.NEXT_PUBLIC_APP_URL}/api/khalti/verify`,
-      website_url: website_url || process.env.NEXT_PUBLIC_APP_URL!,
-      amount: amountInPaisa,
-      purchase_order_id: purchase_order_id,
-      purchase_order_name: purchase_order_name,
+    // 5. Build request payload
+    console.log("Step 7: Building Khalti payload...");
+
+    const amount_breakdown = [
+      {
+        label: "Subtotal",
+        amount: Math.round(order.totalAmount * 100),
+      },
+      {
+        label: "Tax",
+        amount: Math.round(order.taxAmount * 100),
+      },
+    ];
+
+    if (order.discountAmount > 0) {
+      amount_breakdown.push({
+        label: "Discount",
+        amount: -Math.round(order.discountAmount * 100),
+      });
+    }
+
+    const customer_info = order.user
+      ? {
+          name: order.user.name || "Customer",
+          email: order.user.email,
+          phone: order.user.phone || "",
+        }
+      : undefined;
+
+    const product_details = buildKhaltiProductDetails(order.items || []);
+
+    const merchant_extra = {
+      tableNumber: order.tableNumber,
+      orderType: order.orderType,
+      itemCount: order.items?.length || 0,
+      specialInstructions: order.specialInstructions,
     };
 
-    // Add optional fields if provided (per docs)
-    if (customer_info) {
-      khaltiPayload.customer_info = customer_info;
-    }
-    if (amount_breakdown) {
-      khaltiPayload.amount_breakdown = amount_breakdown;
-    }
-    if (product_details) {
-      khaltiPayload.product_details = product_details;
-    }
-    if (merchant_extra) {
-      khaltiPayload.merchant_extra = merchant_extra;
-    }
+    const khaltiPayload = {
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/khalti/verify?orderId=${orderId}`,
+      website_url: process.env.NEXT_PUBLIC_APP_URL!,
+      amount: amountInPaisa,
+      purchase_order_id: orderId,
+      purchase_order_name: `Order #${order.orderNumber}`,
+      ...(customer_info && { customer_info }),
+      ...(amount_breakdown.length > 0 && { amount_breakdown }),
+      ...(product_details.length > 0 && { product_details }),
+      merchant_extra,
+    };
 
-    console.log(
-      "📤 Sending to Khalti:",
-      JSON.stringify(khaltiPayload, null, 2),
-    );
+    console.log("📤 Khalti payload prepared");
+    console.log("Payload structure:", {
+      hasReturnUrl: !!khaltiPayload.return_url,
+      hasWebsiteUrl: !!khaltiPayload.website_url,
+      amount: khaltiPayload.amount,
+      hasCustomerInfo: !!khaltiPayload.customer_info,
+      hasAmountBreakdown: !!khaltiPayload.amount_breakdown,
+      hasProductDetails: !!khaltiPayload.product_details,
+    });
 
-    // 7. Make API call to Khalti (per docs: /epayment/initiate/)
-    const response = await fetch(
-      "https://dev.khalti.com/api/v2/epayment/initiate/",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Key ${secretKey}`, // EXACT format per docs
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(khaltiPayload),
+    // 6. Use environment-specific API URL
+    console.log("Step 8: Determining Khalti API URL...");
+    const isProduction = process.env.NODE_ENV === "production";
+    const khaltiApiUrl = isProduction
+      ? "https://khalti.com/api/v2/epayment/initiate/"
+      : "https://dev.khalti.com/api/v2/epayment/initiate/";
+
+    console.log("🌐 Khalti API URL:", khaltiApiUrl);
+    console.log("Environment:", isProduction ? "production" : "development");
+
+    // 7. Make API call to Khalti
+    console.log("Step 9: Making API call to Khalti...");
+    console.log("Request headers:", {
+      Authorization: `Key ${secretKey.substring(0, 10)}...`,
+      "Content-Type": "application/json",
+    });
+
+    const response = await fetch(khaltiApiUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Key ${secretKey}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify(khaltiPayload),
+    });
+
+    console.log("Step 9.1: Khalti API response status:", response.status);
+    console.log(
+      "Step 9.2: Khalti API response headers:",
+      Object.fromEntries(response.headers.entries()),
     );
 
     // 8. Get response
     const responseText = await response.text();
+    console.log("📥 Khalti raw response length:", responseText.length);
     console.log("📥 Khalti raw response:", responseText);
 
-    // 9. Handle non-OK responses (error handling per docs)
+    // 9. Handle non-OK responses
     if (!response.ok) {
       let errorData;
       try {
@@ -151,34 +246,60 @@ export async function POST(req: Request) {
         errorData = { detail: responseText };
       }
 
-      console.error("❌ Khalti API error:", errorData);
+      console.error("❌ Step 9.3: Khalti API error:", errorData);
 
-      // Map error responses as per docs
       return NextResponse.json(
         {
+          success: false,
           error_key: errorData.error_key || "api_error",
           detail: errorData.detail || "Khalti API error",
+          status_code: response.status,
         },
         { status: response.status },
       );
     }
 
     // 10. Parse success response
+    console.log("Step 10: Parsing success response...");
     const data = JSON.parse(responseText);
     console.log("✅ Khalti success response:", data);
 
-    // 11. Return payment details as per docs
+    // 11. Store payment initiation in database
+    console.log("Step 11: Storing payment in database...");
+    try {
+      const payment = await db.payment.create({
+        data: {
+          orderId: order.id,
+          amount: order.finalAmount,
+          paymentMethod: "KHALTI",
+          status: "PENDING",
+          transactionId: data.pidx,
+          gatewayResponse: data,
+        },
+      });
+      console.log("✅ Payment record created:", payment.id);
+    } catch (dbError) {
+      console.error("❌ Step 11.1: Database error:", dbError);
+      // Continue even if DB save fails? Probably not
+      throw dbError;
+    }
+
+    // 12. Return payment details
+    console.log("Step 12: Returning success response");
     return NextResponse.json({
       success: true,
-      pidx: data.pidx, // Payment ID for lookup
-      payment_url: data.payment_url, // URL to redirect user
-      expires_at: data.expires_at, // Link expiry
-      expires_in: data.expires_in, // Seconds until expiry
+      pidx: data.pidx,
+      payment_url: data.payment_url,
+      expires_at: data.expires_at,
+      expires_in: data.expires_in,
+      order_id: order.id,
+      order_number: order.orderNumber,
     });
   } catch (error) {
-    console.error("💥 Server error:", error);
+    console.error("💥 Server error at step:", error);
     return NextResponse.json(
       {
+        success: false,
         error_key: "server_error",
         detail:
           error instanceof Error ? error.message : "Internal server error",
@@ -188,7 +309,7 @@ export async function POST(req: Request) {
   }
 }
 
-// GET endpoint for testing (per docs)
+// GET endpoint for testing
 export async function GET() {
   const secretKey = process.env.KHALTI_SECRET_KEY;
 

@@ -1,6 +1,6 @@
 import { Loader2, Check } from "lucide-react";
 import { usePlaceOrder } from "@/hooks/useOrders";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { PlaceOrderRequest } from "@/types/orders";
 
 interface PlaceOrderButtonProps {
@@ -18,8 +18,6 @@ export const PlaceOrderButton = ({
     if (isPending) return;
     mutate(orderData);
   };
-
-  console.log(orderData);
 
   return (
     <Button

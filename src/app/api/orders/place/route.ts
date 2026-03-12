@@ -227,6 +227,13 @@ export async function POST(request: NextRequest) {
           })),
           createdAt: order.createdAt,
         },
+        paymentInfo: {
+          requiresPayment: body.paymentMethod && body.paymentMethod !== "COD",
+          paymentMethod: body.paymentMethod,
+          amount: finalAmount,
+          // Add this if you want to initiate payment immediately
+          initiatePayment: body.paymentMethod !== "COD",
+        },
         nextSteps: getNextSteps(order.orderType, order.paymentMethod!),
       },
       { status: 201 },
