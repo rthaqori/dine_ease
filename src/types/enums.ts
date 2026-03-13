@@ -30,7 +30,7 @@ export const PAYMENT_STATUS = [
 
 export type PaymentStatus = (typeof PAYMENT_STATUS)[number];
 
-export const PAYMENT_METHODS = ["CASH", "CARD", "ONLINE", "WALLET"] as const;
+export const PAYMENT_METHODS = ["COD", "ESEWA", "KHALTI"] as const;
 
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
 

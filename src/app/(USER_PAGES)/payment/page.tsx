@@ -2,10 +2,51 @@
 
 import { KhaltiPaymentButton } from "@/components/buttons/KhaltiPaymentButton";
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function PaymentPage() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") || "cmmnloyi90000vsv4hj01twak";
+
+  const apiRoutes = [
+    "/api/stats/customers/acquisition",
+    "/api/stats/dashboard/overview",
+    "/api/stats/inventory/stock-levels",
+    "/api/stats/menu/category-performance",
+    "/api/stats/menu/top-items",
+    "/api/stats/orders/status-distribution",
+    "/api/stats/orders/timeline",
+    "/api/stats/orders/type-distribution",
+    "/api/stats/payments/method-distribution",
+    "/api/stats/realtime/current",
+    "/api/stats/revenue/daily",
+    "/api/stats/revenue/hourly",
+    "/api/stats/revenue/monthly",
+    "/api/stats/staff/performance",
+  ];
+
+  useEffect(() => {
+    fetchAllStats();
+  }, []);
+
+  async function fetchAllStats() {
+    const results = await Promise.all(
+      apiRoutes.map(async (route) => {
+        try {
+          const res = await fetch(route);
+          const data = await res.json();
+          return { route, data };
+        } catch (error) {
+          return { route, error };
+        }
+      }),
+    );
+
+    results.forEach((result) => {
+      console.log("📊", result.route);
+      console.log(result.data || result.error);
+    });
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">

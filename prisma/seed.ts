@@ -1,1108 +1,15 @@
 import db from "@/lib/db";
+import { seedMenuItemsData } from "./menuItemData";
 
 async function main() {
-  await db.menuItem.createMany({
-    data: [
-      {
-        name: "Bruschetta",
-        description:
-          "Toasted bread topped with fresh tomatoes, garlic, basil, and olive oil",
-        price: 8.5,
-        category: "APPETIZER",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1536739782508-c2388552aad3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicnVzY2hldHRhJTIwYXBwZXRpemVyfGVufDF8fHx8MTc2NjMwNTI2OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["bread", "tomatoes", "garlic", "basil", "olive oil"],
-        tags: ["vegetarian", "italian", "fresh"],
-      },
-      {
-        name: "Spring Rolls",
-        description:
-          "Crispy vegetable spring rolls served with sweet chili sauce",
-        price: 7.0,
-        category: "APPETIZER",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 15,
-        imageUrl:
-          "https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcHJpbmclMjByb2xsc3xlbnwxfHx8fDE3NjYzMzA4Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 220,
-        ingredients: [
-          "vegetables",
-          "rice paper",
-          "soy sauce",
-          "sweet chili sauce",
-        ],
-        tags: ["vegetarian", "asian", "crispy"],
-      },
-      {
-        name: "Buffalo Wings",
-        description:
-          "Spicy chicken wings tossed in buffalo sauce with blue cheese dip",
-        price: 12.0,
-        category: "APPETIZER",
-        preparationStation: "FRY_STATION",
-        isAvailable: false,
-        isVegetarian: false,
-        isSpicy: true,
-        isAlcoholic: false,
-        preparationTime: 20,
-        imageUrl:
-          "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlja2VuJTIwd2luZ3N8ZW58MXx8fHwxNzY2MzUzOTMyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 450,
-        ingredients: [
-          "chicken wings",
-          "buffalo sauce",
-          "blue cheese",
-          "celery",
-        ],
-        tags: ["spicy", "chicken", "american"],
-      },
-      {
-        name: "Caesar Salad",
-        description:
-          "Crisp romaine lettuce with parmesan, croutons and caesar dressing",
-        price: 9.5,
-        category: "APPETIZER",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWVzYXIlMjBzYWxhZHxlbnwxfHx8fDE3NjYzNTAwMDd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 280,
-        ingredients: [
-          "romaine lettuce",
-          "parmesan",
-          "croutons",
-          "caesar dressing",
-        ],
-        tags: ["vegetarian", "salad", "classic"],
-      },
-      {
-        name: "Garlic Bread",
-        description: "Toasted bread with garlic butter and herbs",
-        price: 6.0,
-        category: "APPETIZER",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 12,
-        imageUrl:
-          "https://images.unsplash.com/photo-1573140401552-3fab0b24306f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYXJsaWMlMjBicmVhZHxlbnwxfHx8fDE3NjYzMzI4NzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 320,
-        ingredients: ["bread", "garlic", "butter", "parsley"],
-        tags: ["vegetarian", "bread", "side"],
-      },
-      {
-        name: "Fried Calamari",
-        description: "Crispy squid rings served with marinara sauce and lemon",
-        price: 13.0,
-        category: "APPETIZER",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 18,
-        imageUrl:
-          "https://images.unsplash.com/photo-1734771219838-61863137b117?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWxhbWFyaSUyMGZyaWVkfGVufDF8fHx8MTc2NjMzMDg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 380,
-        ingredients: ["squid", "flour", "marinara sauce", "lemon"],
-        tags: ["seafood", "fried", "crispy"],
-      },
-      {
-        name: "Caprese Salad",
-        description: "Fresh mozzarella, tomatoes, basil with balsamic glaze",
-        price: 10.0,
-        category: "APPETIZER",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1595587870672-c79b47875c6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXByZXNlJTIwc2FsYWR8ZW58MXx8fHwxNzY2Mzg0NjM3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 240,
-        ingredients: ["mozzarella", "tomatoes", "basil", "balsamic vinegar"],
-        tags: ["vegetarian", "fresh", "italian"],
-      },
-      {
-        name: "Soup of the Day",
-        description:
-          "Chef's special soup, ask your server for today's selection",
-        price: 7.5,
-        category: "APPETIZER",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1764015939059-2c5dee249315?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhbXklMjBzb3VwJTIwYm93bHxlbnwxfHx8fDE3NjYxMzg5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["seasonal vegetables", "cream", "herbs", "spices"],
-        tags: ["vegetarian", "soup", "comfort"],
-      },
-      {
-        name: "Ribeye Steak",
-        description:
-          "12oz premium ribeye steak grilled to perfection with garlic butter",
-        price: 32.0,
-        category: "MAIN_COURSE",
-        preparationStation: "GRILL_STATION",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 25,
-        imageUrl:
-          "https://images.unsplash.com/photo-1728376336175-17dee7f07da2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGVhayUyMHBsYXRlfGVufDF8fHx8MTc2NjQwOTA3MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 680,
-        ingredients: ["ribeye steak", "garlic butter", "herbs", "sea salt"],
-        tags: ["premium", "beef", "grilled"],
-      },
-      {
-        name: "Sushi Platter",
-        description:
-          "Assorted nigiri and rolls with wasabi, ginger, and soy sauce",
-        price: 28.0,
-        category: "MAIN_COURSE",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 20,
-        imageUrl:
-          "https://images.unsplash.com/photo-1663334038419-71e6f82e333f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdXNoaSUyMHBsYXR0ZXJ8ZW58MXx8fHwxNzY2NDA5MDcxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 520,
-        ingredients: ["sushi rice", "fresh fish", "nori", "avocado"],
-        tags: ["seafood", "japanese", "fresh"],
-      },
-      {
-        name: "Spicy Chicken Curry",
-        description:
-          "Tender chicken in a rich, aromatic curry sauce with jasmine rice",
-        price: 18.0,
-        category: "MAIN_COURSE",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: true,
-        isAlcoholic: false,
-        preparationTime: 30,
-        imageUrl:
-          "https://images.unsplash.com/photo-1631292784640-2b24be784d5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlja2VuJTIwY3Vycnl8ZW58MXx8fHwxNzY2MzMyMzM5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 580,
-        ingredients: ["chicken", "curry spices", "coconut milk", "rice"],
-        tags: ["spicy", "curry", "indian"],
-      },
-      {
-        name: "Fish Tacos",
-        description:
-          "Three grilled fish tacos with cabbage slaw and chipotle mayo",
-        price: 16.5,
-        category: "MAIN_COURSE",
-        preparationStation: "GRILL_STATION",
-        isAvailable: false,
-        isVegetarian: false,
-        isSpicy: true,
-        isAlcoholic: false,
-        preparationTime: 18,
-        imageUrl:
-          "https://images.unsplash.com/photo-1604467715878-83e57e8bc129?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaXNoJTIwdGFjb3N8ZW58MXx8fHwxNzY2MzI2NTU0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 460,
-        ingredients: ["white fish", "tortillas", "cabbage", "chipotle mayo"],
-        tags: ["seafood", "mexican", "spicy"],
-      },
-      {
-        name: "Margherita Pizza",
-        description:
-          "Classic pizza with fresh mozzarella, tomato sauce, and basil",
-        price: 15.0,
-        category: "MAIN_COURSE",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 15,
-        imageUrl:
-          "https://images.unsplash.com/photo-1617343251257-b5d709934ddd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZWdldGFyaWFuJTIwcGl6emF8ZW58MXx8fHwxNzY2MzY3MjU2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 540,
-        ingredients: ["pizza dough", "mozzarella", "tomato sauce", "basil"],
-        tags: ["vegetarian", "italian", "classic"],
-      },
-      {
-        name: "Lamb Chops",
-        description: "Grilled lamb chops with rosemary and mint sauce",
-        price: 34.0,
-        category: "MAIN_COURSE",
-        preparationStation: "GRILL_STATION",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 28,
-        imageUrl:
-          "https://images.unsplash.com/photo-1692106914421-e04e1066bd62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYW1iJTIwY2hvcHN8ZW58MXx8fHwxNzY2MzM0NDcxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 620,
-        ingredients: ["lamb chops", "rosemary", "garlic", "mint sauce"],
-        tags: ["premium", "lamb", "grilled"],
-      },
-      {
-        name: "Seafood Paella",
-        description:
-          "Traditional Spanish rice dish with shrimp, mussels, and calamari",
-        price: 26.0,
-        category: "MAIN_COURSE",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 35,
-        imageUrl:
-          "https://images.unsplash.com/photo-1623961990059-28356e226a77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZWFmb29kJTIwcGFlbGxhfGVufDF8fHx8MTc2NjQwOTA3Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 640,
-        ingredients: ["rice", "shrimp", "mussels", "saffron", "calamari"],
-        tags: ["seafood", "spanish", "rice"],
-      },
-      {
-        name: "Gourmet Burger",
-        description:
-          "Wagyu beef burger with aged cheddar, caramelized onions, and truffle aioli",
-        price: 19.0,
-        category: "MAIN_COURSE",
-        preparationStation: "GRILL_STATION",
-        isAvailable: true,
-        isVegetarian: false,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 20,
-        imageUrl:
-          "https://images.unsplash.com/photo-1550547660-d9450f859349?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3VybWV0JTIwYnVyZ2VyfGVufDF8fHx8MTc2NjEwMTkxMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 780,
-        ingredients: [
-          "wagyu beef",
-          "cheddar",
-          "onions",
-          "truffle aioli",
-          "brioche bun",
-        ],
-        tags: ["premium", "burger", "beef"],
-      },
-      {
-        name: "Molten Chocolate Lava Cake",
-        description:
-          "Warm chocolate cake with a gooey center, served with vanilla ice cream",
-        price: 9.0,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 12,
-        imageUrl:
-          "https://images.unsplash.com/photo-1673551490812-eaee2e9bf0ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaG9jb2xhdGUlMjBsYXZhJTIwY2FrZXxlbnwxfHx8fDE3NjYzMzA0MjV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 520,
-        ingredients: [
-          "dark chocolate",
-          "butter",
-          "eggs",
-          "sugar",
-          "vanilla ice cream",
-        ],
-        tags: ["chocolate", "warm", "indulgent"],
-      },
-      {
-        name: "Crème Brûlée",
-        description: "Classic French custard with caramelized sugar crust",
-        price: 8.5,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1676300184943-09b2a08319a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVtZSUyMGJydWxlZXxlbnwxfHx8fDE3NjYzODQ2NDB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 380,
-        ingredients: ["cream", "egg yolks", "vanilla", "sugar"],
-        tags: ["french", "classic", "creamy"],
-      },
-      {
-        name: "Apple Pie",
-        description: "Homemade apple pie with cinnamon and a flaky crust",
-        price: 7.5,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: false,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1621743478914-cc8a86d7e7b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcHBsZSUyMHBpZXxlbnwxfHx8fDE3NjYzNDY4ODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 420,
-        ingredients: ["apples", "cinnamon", "sugar", "pie crust"],
-        tags: ["american", "fruit", "warm"],
-      },
-      {
-        name: "Ice Cream Sundae",
-        description:
-          "Three scoops of ice cream with chocolate sauce, whipped cream, and cherry",
-        price: 8.0,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1657225953401-5f95007fc8e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpY2UlMjBjcmVhbSUyMHN1bmRhZXxlbnwxfHx8fDE3NjYzODA5Njh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 480,
-        ingredients: [
-          "ice cream",
-          "chocolate sauce",
-          "whipped cream",
-          "cherry",
-        ],
-        tags: ["cold", "sweet", "classic"],
-      },
-      {
-        name: "Panna Cotta",
-        description: "Italian cream dessert with berry compote",
-        price: 9.5,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1488477181946-6428a0291777?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYW5uYSUyMGNvdHRhfGVufDF8fHx8MTc2NjQwOTA3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 320,
-        ingredients: ["cream", "sugar", "vanilla", "berries", "gelatin"],
-        tags: ["italian", "creamy", "elegant"],
-      },
-      {
-        name: "Fresh Fruit Tart",
-        description:
-          "Buttery tart shell filled with custard and topped with seasonal fruits",
-        price: 10.0,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1620980776848-84ac10194945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcnVpdCUyMHRhcnR8ZW58MXx8fHwxNzY2MzczMjY5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 380,
-        ingredients: [
-          "pastry cream",
-          "tart shell",
-          "strawberries",
-          "kiwi",
-          "blueberries",
-        ],
-        tags: ["fresh", "fruit", "elegant"],
-      },
-      {
-        name: "Macarons Box",
-        description: "Assorted French macarons in various flavors (6 pieces)",
-        price: 12.0,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 3,
-        imageUrl:
-          "https://images.unsplash.com/photo-1679942262057-d5732f732841?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWNhcm9ucyUyMGRlc3NlcnR8ZW58MXx8fHwxNzY2NDA5MDc0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 420,
-        ingredients: [
-          "almond flour",
-          "sugar",
-          "egg whites",
-          "various fillings",
-        ],
-        tags: ["french", "colorful", "delicate"],
-      },
-      {
-        name: "Tiramisu",
-        description:
-          "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone",
-        price: 9.5,
-        category: "DESSERT",
-        preparationStation: "DESSERT_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1714385905983-6f8e06fffae1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0aXJhbWlzdSUyMGRlc3NlcnR8ZW58MXx8fHwxNzY2MDQxMDY0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 450,
-        ingredients: [
-          "mascarpone",
-          "ladyfingers",
-          "espresso",
-          "marsala wine",
-          "cocoa",
-        ],
-        tags: ["italian", "coffee", "classic"],
-      },
-      {
-        name: "Espresso",
-        description: "Rich and bold Italian espresso shot",
-        price: 3.5,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 2,
-        imageUrl:
-          "https://images.unsplash.com/photo-1485808191679-5f86510681a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlc3ByZXNzbyUyMGNvZmZlZXxlbnwxfHx8fDE3NjYzMDk0MTR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 5,
-        ingredients: ["espresso beans", "water"],
-        tags: ["coffee", "hot", "strong"],
-      },
-      {
-        name: "Green Tea",
-        description: "Premium Japanese green tea",
-        price: 4.0,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1606377695906-236fdfcef767?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmVlbiUyMHRlYXxlbnwxfHx8fDE3NjYzODA5Njl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 0,
-        ingredients: ["green tea leaves", "water"],
-        tags: ["tea", "healthy", "hot"],
-      },
-      {
-        name: "Acai Smoothie Bowl",
-        description: "Acai berry smoothie topped with granola and fresh fruits",
-        price: 9.0,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1590301157284-ab2f8707bdc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbW9vdGhpZSUyMGJvd2x8ZW58MXx8fHwxNzY2Mzc3ODMzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 320,
-        ingredients: ["acai berries", "banana", "granola", "honey", "berries"],
-        tags: ["healthy", "fresh", "vegan"],
-      },
-      {
-        name: "Fresh Lemonade",
-        description: "Freshly squeezed lemonade with mint",
-        price: 5.0,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: false,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1616434963473-030c8f1ce663?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpY2VkJTIwbGVtb25hZGV8ZW58MXx8fHwxNzY2NDA5MDc1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 120,
-        ingredients: ["lemons", "sugar", "water", "mint", "ice"],
-        tags: ["refreshing", "cold", "citrus"],
-      },
-      {
-        name: "Hot Chocolate",
-        description: "Rich hot chocolate with whipped cream and marshmallows",
-        price: 5.5,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3QlMjBjaG9jb2xhdGV8ZW58MXx8fHwxNzY2MzIyOTgyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 280,
-        ingredients: ["chocolate", "milk", "whipped cream", "marshmallows"],
-        tags: ["chocolate", "hot", "sweet"],
-      },
-      {
-        name: "Strawberry Milkshake",
-        description: "Creamy milkshake made with fresh strawberries",
-        price: 7.0,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1648178628415-b410fc1d58bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWxrc2hha2UlMjBnbGFzc3xlbnwxfHx8fDE3NjY0MDkwNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 380,
-        ingredients: ["strawberries", "ice cream", "milk", "sugar"],
-        tags: ["sweet", "cold", "fruity"],
-      },
-      {
-        name: "Iced Tea",
-        description: "Refreshing iced tea with lemon",
-        price: 4.5,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 3,
-        imageUrl:
-          "https://images.unsplash.com/photo-1499638673689-79a0b5115d87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpY2VkJTIwdGVhfGVufDF8fHx8MTc2NjM5OTYxNXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 80,
-        ingredients: ["black tea", "lemon", "sugar", "ice"],
-        tags: ["refreshing", "cold", "tea"],
-      },
-      {
-        name: "Cappuccino",
-        description: "Classic Italian coffee with steamed milk and foam",
-        price: 4.5,
-        category: "BEVERAGE",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 4,
-        imageUrl:
-          "https://images.unsplash.com/photo-1611564494260-6f21b80af7ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBsYXR0ZXxlbnwxfHx8fDE3NjYwNDc2Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 120,
-        ingredients: ["espresso", "steamed milk", "milk foam"],
-        tags: ["coffee", "hot", "classic"],
-      },
-      {
-        name: "Margarita",
-        description: "Classic tequila cocktail with lime and salt rim",
-        price: 12.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1655546837806-76a6dd54ee2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXJnYXJpdGElMjBjb2NrdGFpbHxlbnwxfHx8fDE3NjYzMjY5MzN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 220,
-        ingredients: ["tequila", "triple sec", "lime juice", "salt"],
-        tags: ["cocktail", "tequila", "classic"],
-      },
-      {
-        name: "Whiskey Old Fashioned",
-        description: "Premium bourbon with bitters, sugar, and orange peel",
-        price: 14.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1667928916119-2c2c5fe67b90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGlza2V5JTIwZ2xhc3N8ZW58MXx8fHwxNjYzMzU1MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["bourbon", "bitters", "sugar", "orange peel"],
-        tags: ["whiskey", "classic", "strong"],
-      },
-      {
-        name: "Draft Beer",
-        description: "Selection of local and imported beers on tap",
-        price: 7.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 2,
-        imageUrl:
-          "https://images.unsplash.com/photo-1615332579037-3c44b3660b53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWVyJTIwcGludHxlbnwxfHx8fDE3NjY0MDkwNzd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 150,
-        ingredients: ["beer"],
-        tags: ["beer", "cold", "refreshing"],
-      },
-      {
-        name: "Cosmopolitan",
-        description: "Vodka cocktail with cranberry, lime, and triple sec",
-        price: 13.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: false,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1556855810-ac404aa91e85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Ntb3BvbGl0YW4lMjBjb2NrdGFpbHxlbnwxfHx8fDE3NjYzMjY5MzV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 200,
-        ingredients: ["vodka", "cranberry juice", "triple sec", "lime juice"],
-        tags: ["cocktail", "vodka", "fruity"],
-      },
-      {
-        name: "Sangria Pitcher",
-        description: "Red wine sangria with fresh fruits (serves 4)",
-        price: 28.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1712219003003-23f067d78e55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzYW5ncmlhJTIwcGl0Y2hlcnxlbnwxfHx8fDE3NjY0MDkwNzh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["red wine", "brandy", "orange juice", "fresh fruits"],
-        tags: ["wine", "fruity", "sharing"],
-      },
-      {
-        name: "Champagne",
-        description: "Premium French champagne",
-        price: 18.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 2,
-        imageUrl:
-          "https://images.unsplash.com/photo-1546567379-1af2e0d527e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGFtcGFnbmUlMjBnbGFzc2VzfGVufDF8fHx8MTc2NjQwOTA3OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 90,
-        ingredients: ["champagne"],
-        tags: ["champagne", "sparkling", "celebration"],
-      },
-      {
-        name: "Dirty Martini",
-        description: "Classic vodka or gin martini with olive brine",
-        price: 13.5,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 4,
-        imageUrl:
-          "https://images.unsplash.com/photo-1638884896143-f1b2501e9a61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXJ0aW5pJTIwZ2xhc3N8ZW58MXx8fHwxNzY2NDA5MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 160,
-        ingredients: ["vodka", "dry vermouth", "olive brine", "olives"],
-        tags: ["cocktail", "classic", "strong"],
-      },
-      {
-        name: "Mojito",
-        description: "Refreshing rum cocktail with mint, lime, and soda",
-        price: 12.0,
-        category: "ALCOHOLIC",
-        preparationStation: "BAR",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: true,
-        preparationTime: 6,
-        imageUrl:
-          "https://images.unsplash.com/photo-1556855810-ac404aa91e85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2NrdGFpbCUyMGdsYXNzfGVufDF8fHx8MTc2NjEzODk2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 210,
-        ingredients: ["white rum", "mint", "lime juice", "sugar", "soda water"],
-        tags: ["cocktail", "rum", "refreshing"],
-      },
-      {
-        name: "Loaded Nachos",
-        description:
-          "Crispy tortilla chips with cheese, jalapeños, sour cream, and guacamole",
-        price: 10.0,
-        category: "SNACK",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: true,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1669624272709-c5b91f66b1b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuYWNob3MlMjBjaGVlc2V8ZW58MXx8fHwxNzY2MzgwOTY2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 520,
-        ingredients: [
-          "tortilla chips",
-          "cheese",
-          "jalapeños",
-          "sour cream",
-          "guacamole",
-        ],
-        tags: ["spicy", "mexican", "sharing"],
-      },
-      {
-        name: "Truffle Popcorn",
-        description: "Gourmet popcorn with truffle oil and parmesan",
-        price: 6.0,
-        category: "SNACK",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1695866648701-444366d3abe3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3Bjb3JuJTIwYm93bHxlbnwxfHx8fDE3NjY0MDkwNzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["popcorn", "truffle oil", "parmesan", "salt"],
-        tags: ["vegetarian", "gourmet", "light"],
-      },
-      {
-        name: "Soft Pretzel",
-        description: "Warm Bavarian-style pretzel with beer cheese dip",
-        price: 7.5,
-        category: "SNACK",
-        preparationStation: "KITCHEN",
-        isAvailable: false,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1607103058027-4c5b42b86a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmV0emVsJTIwc29mdHxlbnwxfHx8fDE3NjY0MDkwNzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 340,
-        ingredients: ["pretzel dough", "salt", "beer cheese"],
-        tags: ["vegetarian", "warm", "bavarian"],
-      },
-      {
-        name: "Chips & Salsa",
-        description: "Crispy tortilla chips with fresh house-made salsa",
-        price: 5.5,
-        category: "SNACK",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: true,
-        isAlcoholic: false,
-        preparationTime: 3,
-        imageUrl:
-          "https://images.unsplash.com/photo-1734027899096-291063588ab3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlwcyUyMHNhbHNhfGVufDF8fHx8MTc2NjQwOTA3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 220,
-        ingredients: [
-          "tortilla chips",
-          "tomatoes",
-          "onions",
-          "cilantro",
-          "lime",
-        ],
-        tags: ["vegan", "spicy", "mexican"],
-      },
-      {
-        name: "Crispy Onion Rings",
-        description: "Beer-battered onion rings with ranch dipping sauce",
-        price: 8.0,
-        category: "SNACK",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 12,
-        imageUrl:
-          "https://images.unsplash.com/photo-1639024471283-03518883512d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbmlvbiUyMHJpbmdzfGVufDF8fHx8MTc2NjM5OTY5N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 380,
-        ingredients: ["onions", "beer batter", "ranch dressing"],
-        tags: ["vegetarian", "fried", "crispy"],
-      },
-      {
-        name: "Mozzarella Sticks",
-        description: "Breaded mozzarella cheese sticks with marinara sauce",
-        price: 9.0,
-        category: "SNACK",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1734774924912-dcbb467f8599?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3p6YXJlbGxhJTIwc3RpY2tzfGVufDF8fHx8MTc2NjQwOTA4MHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 420,
-        ingredients: ["mozzarella", "breadcrumbs", "marinara sauce"],
-        tags: ["vegetarian", "cheese", "fried"],
-      },
-      {
-        name: "Edamame",
-        description: "Steamed soybeans with sea salt",
-        price: 5.0,
-        category: "SNACK",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1575262599410-837a72005862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlZGFtYW1lJTIwYm93bHxlbnwxfHx8fDE3NjY0MDkwODB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 120,
-        ingredients: ["edamame", "sea salt"],
-        tags: ["vegan", "healthy", "japanese"],
-      },
-      {
-        name: "French Fries",
-        description: "Crispy golden fries with sea salt",
-        price: 4.0,
-        category: "SNACK",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVuY2glMjBmcmllc3xlbnwxfHx8fDE3NjYwNjMzNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 320,
-        ingredients: ["potatoes", "oil", "salt"],
-        tags: ["vegan", "classic", "crispy"],
-      },
-      {
-        name: "Garlic Mashed Potatoes",
-        description: "Creamy mashed potatoes with roasted garlic and butter",
-        price: 6.5,
-        category: "SIDE_DISH",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1707616954324-99c89a78a20d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXNoZWQlMjBwb3RhdG9lc3xlbnwxfHx8fDE3NjY0MDkwODB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 240,
-        ingredients: ["potatoes", "butter", "cream", "garlic", "herbs"],
-        tags: ["vegetarian", "comfort", "creamy"],
-      },
-      {
-        name: "Coleslaw",
-        description: "Fresh cabbage slaw with tangy dressing",
-        price: 5.0,
-        category: "SIDE_DISH",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 5,
-        imageUrl:
-          "https://images.unsplash.com/photo-1708388064941-de7a9f879bf9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xlc2xhdyUyMGJvd2x8ZW58MXx8fHwxNzY2NDA5MDgxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 150,
-        ingredients: ["cabbage", "carrots", "mayonnaise", "vinegar", "sugar"],
-        tags: ["vegetarian", "fresh", "tangy"],
-      },
-      {
-        name: "Steamed Broccoli",
-        description: "Fresh broccoli florets steamed and seasoned",
-        price: 5.5,
-        category: "SIDE_DISH",
-        preparationStation: "KITCHEN",
-        isAvailable: false,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1609190756694-1580c87618eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGVhbWVkJTIwYnJvY2NvbGl8ZW58MXx8fHwxNzY2NDA5MDgxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 55,
-        ingredients: ["broccoli", "butter", "salt", "pepper"],
-        tags: ["vegan", "healthy", "green"],
-      },
-      {
-        name: "Herb Rice Pilaf",
-        description: "Aromatic rice cooked with herbs and vegetables",
-        price: 6.0,
-        category: "SIDE_DISH",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 15,
-        imageUrl:
-          "https://images.unsplash.com/photo-1634324092536-74480096b939?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyaWNlJTIwcGlsYWZ8ZW58MXx8fHwxNzY2MzM5OTUyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 220,
-        ingredients: ["rice", "onions", "herbs", "butter", "vegetables"],
-        tags: ["vegetarian", "aromatic", "rice"],
-      },
-      {
-        name: "Grilled Corn on the Cob",
-        description: "Sweet corn grilled with herb butter",
-        price: 5.5,
-        category: "SIDE_DISH",
-        preparationStation: "GRILL_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 12,
-        imageUrl:
-          "https://images.unsplash.com/photo-1708077810069-0e082d9558dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3JuJTIwY29iJTIwZ3JpbGxlZHxlbnwxfHx8fDE3NjY0MDkwODF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 180,
-        ingredients: ["corn", "butter", "herbs", "salt"],
-        tags: ["vegetarian", "sweet", "grilled"],
-      },
-      {
-        name: "Sweet Potato Fries",
-        description: "Crispy sweet potato fries with honey dipping sauce",
-        price: 7.0,
-        category: "SIDE_DISH",
-        preparationStation: "FRY_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 15,
-        imageUrl:
-          "https://images.unsplash.com/photo-1598679253544-2c97992403ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzd2VldCUyMHBvdGF0byUyMGZyaWVzfGVufDF8fHx8MTc2NjQwOTA4Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 280,
-        ingredients: ["sweet potatoes", "oil", "honey", "spices"],
-        tags: ["vegetarian", "sweet", "crispy"],
-      },
-      {
-        name: "Sautéed Mushrooms",
-        description: "Mixed mushrooms sautéed in garlic butter",
-        price: 8.0,
-        category: "SIDE_DISH",
-        preparationStation: "KITCHEN",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 10,
-        imageUrl:
-          "https://images.unsplash.com/photo-1607835498598-29e40be5eed0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzYXV0ZWVkJTIwbXVzaHJvb21zfGVufDF8fHx8MTc2NjQwOTA4Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 120,
-        ingredients: ["mushrooms", "garlic", "butter", "thyme", "parsley"],
-        tags: ["vegetarian", "savory", "gourmet"],
-      },
-      {
-        name: "Grilled Vegetables",
-        description:
-          "Seasonal vegetables grilled to perfection with balsamic glaze",
-        price: 6.5,
-        category: "SIDE_DISH",
-        preparationStation: "GRILL_STATION",
-        isAvailable: true,
-        isVegetarian: true,
-        isSpicy: false,
-        isAlcoholic: false,
-        preparationTime: 12,
-        imageUrl:
-          "https://images.unsplash.com/photo-1633862033803-7abafaf9bcb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzaWRlJTIwZGlzaCUyMHZlZ2V0YWJsZXN8ZW58MXx8fHwxNzY2MTMwMTIxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-        calories: 140,
-        ingredients: [
-          "zucchini",
-          "bell peppers",
-          "eggplant",
-          "balsamic",
-          "olive oil",
-        ],
-        tags: ["vegan", "healthy", "grilled"],
-      },
-    ],
-  });
+  console.log("🗑 Deleting existing MenuItems...");
+  // delete all existing records
+  await db.menuItem.deleteMany();
+  //  console.log("🌱 Seeding new MenuItems...");
 
-  const tables = [
-    {
-      tableNumber: 1,
-      capacity: 2,
-      location: "Window",
-      isAvailable: true,
-    },
-    {
-      tableNumber: 2,
-      capacity: 2,
-      location: "Window",
-      isAvailable: false,
-    },
-    {
-      tableNumber: 3,
-      capacity: 4,
-      location: "Main Hall",
-      isAvailable: true,
-    },
-    {
-      tableNumber: 4,
-      capacity: 4,
-      location: "Main Hall",
-      isAvailable: true,
-    },
-    {
-      tableNumber: 5,
-      capacity: 6,
-      location: "Main Hall",
-      isAvailable: false,
-    },
-    {
-      tableNumber: 6,
-      capacity: 6,
-      location: "Patio",
-      isAvailable: true,
-    },
-    {
-      tableNumber: 7,
-      capacity: 8,
-      location: "Patio",
-      isAvailable: true,
-    },
-    {
-      tableNumber: 8,
-      capacity: 10,
-      location: "Private Room",
-      isAvailable: false,
-    },
-  ];
-
-  for (const table of tables) {
-    await db.table.upsert({
-      where: { tableNumber: table.tableNumber },
-      update: {},
-      create: table,
-    });
-  }
-
-  console.log("✅ Tables seeded successfully");
+  // // insert new data
+  await seedMenuItemsData();
+  console.log("✅ MenuItems seeded successfully");
 }
 main()
   .then(async () => {
@@ -1113,3 +20,1666 @@ main()
     await db.$disconnect();
     process.exit(1);
   });
+
+// import {
+//   ItemCategory,
+//   NotificationType,
+//   OrderStatus,
+//   OrderType,
+//   PaymentMethod,
+//   PaymentStatus,
+//   PreparationStation,
+//   PrismaClient,
+//   UserRole,
+// } from "@/generated/client";
+// import db from "@/lib/db";
+// import { hash } from "bcryptjs";
+// import {
+//   addDays,
+//   addHours,
+//   addMinutes,
+//   subDays,
+//   subHours,
+//   startOfDay,
+//   endOfDay,
+//   setHours,
+//   setMinutes,
+//   setSeconds,
+// } from "date-fns";
+
+// async function main() {
+//   console.log("🌱 Starting seed...");
+
+//   // Clear existing data (optional - be careful in production!)
+//   await clearDatabase();
+
+//   // Create data in sequence
+//   await createUsers();
+//   await createTables();
+//   await createInventory();
+//   await createMenuItems();
+//   // await createCarts();
+//   await createOrders();
+//   await createReservations();
+//   await createStaffShifts();
+//   await createNotifications();
+
+//   console.log("✅ Seed completed successfully!");
+// }
+
+// async function clearDatabase() {
+//   console.log("Clearing existing data...");
+
+//   const tablenames = await db.$queryRaw<
+//     Array<{ tablename: string }>
+//   >`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+
+//   for (const { tablename } of tablenames) {
+//     if (tablename !== "_prisma_migrations") {
+//       try {
+//         await db.$executeRawUnsafe(
+//           `TRUNCATE TABLE "public"."${tablename}" CASCADE;`,
+//         );
+//       } catch (error) {
+//         console.log(`Error truncating ${tablename}:`, error);
+//       }
+//     }
+//   }
+// }
+
+// async function createUsers() {
+//   console.log("Creating users...");
+
+//   const hashedPassword = await hash("password123", 10);
+
+//   // Create admin users
+//   const admin1 = await db.user.create({
+//     data: {
+//       name: "John Manager",
+//       email: "john@restaurant.com",
+//       phone: "+1234567890",
+//       password: hashedPassword,
+//       role: UserRole.MANAGER,
+//       loyalityPoints: 500,
+//       addresses: {
+//         create: [
+//           {
+//             name: "Home",
+//             phone: "+1234567890",
+//             street: "123 Main St",
+//             city: "New York",
+//             state: "NY",
+//             postalCode: "10001",
+//             country: "USA",
+//             isDefault: true,
+//           },
+//         ],
+//       },
+//     },
+//   });
+
+//   const admin2 = await db.user.create({
+//     data: {
+//       name: "Sarah Admin",
+//       email: "sarah@restaurant.com",
+//       phone: "+1234567891",
+//       password: hashedPassword,
+//       role: UserRole.MANAGER,
+//       loyalityPoints: 750,
+//     },
+//   });
+
+//   // Create chef users
+//   const chef1 = await db.user.create({
+//     data: {
+//       name: "Michael Gordon",
+//       email: "michael@restaurant.com",
+//       phone: "+1234567892",
+//       password: hashedPassword,
+//       role: UserRole.CHEF,
+//       loyalityPoints: 0,
+//     },
+//   });
+
+//   const chef2 = await db.user.create({
+//     data: {
+//       name: "Emma Thompson",
+//       email: "emma@restaurant.com",
+//       phone: "+1234567893",
+//       password: hashedPassword,
+//       role: UserRole.CHEF,
+//       loyalityPoints: 0,
+//     },
+//   });
+
+//   // Create bartender users
+//   const bartender1 = await db.user.create({
+//     data: {
+//       name: "David Martinez",
+//       email: "david@restaurant.com",
+//       phone: "+1234567894",
+//       password: hashedPassword,
+//       role: UserRole.BARTENDER,
+//       loyalityPoints: 0,
+//     },
+//   });
+
+//   // Create waiter users
+//   const waiter1 = await db.user.create({
+//     data: {
+//       name: "Lisa Chen",
+//       email: "lisa@restaurant.com",
+//       phone: "+1234567895",
+//       password: hashedPassword,
+//       role: UserRole.WAITER,
+//       loyalityPoints: 0,
+//     },
+//   });
+
+//   const waiter2 = await db.user.create({
+//     data: {
+//       name: "James Wilson",
+//       email: "james@restaurant.com",
+//       phone: "+1234567896",
+//       password: hashedPassword,
+//       role: UserRole.WAITER,
+//       loyalityPoints: 0,
+//     },
+//   });
+
+//   // Create regular customers (50 customers)
+//   const customers = [];
+//   const firstNames = [
+//     "Alice",
+//     "Bob",
+//     "Charlie",
+//     "Diana",
+//     "Eve",
+//     "Frank",
+//     "Grace",
+//     "Henry",
+//     "Ivy",
+//     "Jack",
+//     "Karen",
+//     "Leo",
+//     "Mona",
+//     "Nick",
+//     "Olga",
+//     "Paul",
+//     "Quinn",
+//     "Rose",
+//     "Sam",
+//     "Tina",
+//     "Umar",
+//     "Vera",
+//     "Will",
+//     "Xena",
+//     "Yuri",
+//     "Zara",
+//     "Adam",
+//     "Bella",
+//     "Chris",
+//     "Dora",
+//     "Eric",
+//     "Fiona",
+//     "George",
+//     "Hannah",
+//     "Ian",
+//     "Julia",
+//     "Kevin",
+//     "Laura",
+//     "Mike",
+//     "Nina",
+//     "Oscar",
+//     "Patricia",
+//     "Quentin",
+//     "Rachel",
+//     "Steve",
+//     "Tracy",
+//     "Ulysses",
+//     "Victoria",
+//     "Walter",
+//     "Xavier",
+//   ];
+
+//   const lastNames = [
+//     "Smith",
+//     "Johnson",
+//     "Williams",
+//     "Brown",
+//     "Jones",
+//     "Garcia",
+//     "Miller",
+//     "Davis",
+//     "Rodriguez",
+//     "Martinez",
+//     "Hernandez",
+//     "Lopez",
+//     "Gonzalez",
+//     "Wilson",
+//     "Anderson",
+//     "Thomas",
+//     "Taylor",
+//     "Moore",
+//     "Jackson",
+//     "Martin",
+//     "Lee",
+//     "Perez",
+//     "Thompson",
+//     "White",
+//     "Harris",
+//     "Sanchez",
+//     "Clark",
+//     "Ramirez",
+//     "Lewis",
+//     "Robinson",
+//   ];
+
+//   for (let i = 0; i < 50; i++) {
+//     const firstName = firstNames[i % firstNames.length];
+//     const lastName = lastNames[Math.floor(i / 2) % lastNames.length];
+//     const daysAgo = Math.floor(Math.random() * 365); // Random signup date in last year
+
+//     const customer = await db.user.create({
+//       data: {
+//         name: `${firstName} ${lastName}`,
+//         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@email.com`,
+//         phone: `+1${Math.floor(1000000000 + Math.random() * 900000000)}`,
+//         password: i < 10 ? hashedPassword : null, // Some users have password, some don't (social login)
+//         role: UserRole.USER,
+//         loyalityPoints: Math.floor(Math.random() * 1000),
+//         createdAt: subDays(new Date(), daysAgo),
+//         addresses:
+//           Math.random() > 0.3
+//             ? {
+//                 // 70% have addresses
+//                 create: [
+//                   {
+//                     name: "Home",
+//                     phone: `+1${Math.floor(1000000000 + Math.random() * 900000000)}`,
+//                     street: `${Math.floor(100 + Math.random() * 900)} ${["Main", "Oak", "Pine", "Maple", "Cedar"][Math.floor(Math.random() * 5)]} St`,
+//                     city: [
+//                       "New York",
+//                       "Los Angeles",
+//                       "Chicago",
+//                       "Houston",
+//                       "Phoenix",
+//                     ][Math.floor(Math.random() * 5)],
+//                     state: ["NY", "CA", "IL", "TX", "AZ"][
+//                       Math.floor(Math.random() * 5)
+//                     ],
+//                     postalCode: `${Math.floor(10000 + Math.random() * 90000)}`,
+//                     country: "USA",
+//                     isDefault: true,
+//                   },
+//                 ],
+//               }
+//             : undefined,
+//       },
+//     });
+//     customers.push(customer);
+//   }
+
+//   console.log(`Created ${customers.length + 8} users`);
+//   return {
+//     admin1,
+//     admin2,
+//     chef1,
+//     chef2,
+//     bartender1,
+//     waiter1,
+//     waiter2,
+//     customers,
+//   };
+// }
+
+// async function createTables() {
+//   console.log("Creating tables...");
+
+//   const tables = [];
+//   for (let i = 1; i <= 20; i++) {
+//     const table = await db.table.create({
+//       data: {
+//         tableNumber: i,
+//         capacity: [2, 4, 6, 8][Math.floor(Math.random() * 4)],
+//         isAvailable: true,
+//         location: ["Window", "Patio", "Main Hall", "Private Room", "Bar Area"][
+//           Math.floor(Math.random() * 5)
+//         ],
+//       },
+//     });
+//     tables.push(table);
+//   }
+
+//   console.log(`Created ${tables.length} tables`);
+//   return tables;
+// }
+
+// async function createInventory() {
+//   console.log("Creating inventory...");
+
+//   const inventoryItems = [
+//     // Vegetables
+//     {
+//       name: "Tomatoes",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 10,
+//       quantity: 25,
+//     },
+//     {
+//       name: "Onions",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 15,
+//       quantity: 30,
+//     },
+//     {
+//       name: "Potatoes",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 20,
+//       quantity: 45,
+//     },
+//     {
+//       name: "Lettuce",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 8,
+//     },
+//     {
+//       name: "Bell Peppers",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 12,
+//     },
+//     {
+//       name: "Garlic",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 3,
+//       quantity: 4,
+//     },
+//     {
+//       name: "Spinach",
+//       category: "Vegetables",
+//       unit: "kg",
+//       minThreshold: 4,
+//       quantity: 3,
+//     }, // Low stock
+
+//     // Meats
+//     {
+//       name: "Chicken Breast",
+//       category: "Meat",
+//       unit: "kg",
+//       minThreshold: 15,
+//       quantity: 22,
+//     },
+//     {
+//       name: "Beef Tenderloin",
+//       category: "Meat",
+//       unit: "kg",
+//       minThreshold: 10,
+//       quantity: 18,
+//     },
+//     {
+//       name: "Salmon Fillet",
+//       category: "Seafood",
+//       unit: "kg",
+//       minThreshold: 8,
+//       quantity: 12,
+//     },
+//     {
+//       name: "Shrimp",
+//       category: "Seafood",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 7,
+//     },
+//     {
+//       name: "Pork Chops",
+//       category: "Meat",
+//       unit: "kg",
+//       minThreshold: 8,
+//       quantity: 6,
+//     }, // Low stock
+//     {
+//       name: "Lamb Rack",
+//       category: "Meat",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 2,
+//     }, // Critical
+
+//     // Dairy
+//     {
+//       name: "Milk",
+//       category: "Dairy",
+//       unit: "liters",
+//       minThreshold: 20,
+//       quantity: 35,
+//     },
+//     {
+//       name: "Cream",
+//       category: "Dairy",
+//       unit: "liters",
+//       minThreshold: 10,
+//       quantity: 15,
+//     },
+//     {
+//       name: "Butter",
+//       category: "Dairy",
+//       unit: "kg",
+//       minThreshold: 8,
+//       quantity: 12,
+//     },
+//     {
+//       name: "Cheese",
+//       category: "Dairy",
+//       unit: "kg",
+//       minThreshold: 10,
+//       quantity: 14,
+//     },
+//     {
+//       name: "Eggs",
+//       category: "Dairy",
+//       unit: "dozen",
+//       minThreshold: 30,
+//       quantity: 45,
+//     },
+//     {
+//       name: "Yogurt",
+//       category: "Dairy",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 2,
+//     }, // Critical
+
+//     // Beverages
+//     {
+//       name: "Coffee Beans",
+//       category: "Beverages",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 8,
+//     },
+//     {
+//       name: "Tea Leaves",
+//       category: "Beverages",
+//       unit: "kg",
+//       minThreshold: 3,
+//       quantity: 4,
+//     },
+//     {
+//       name: "Orange Juice",
+//       category: "Beverages",
+//       unit: "liters",
+//       minThreshold: 10,
+//       quantity: 12,
+//     },
+//     {
+//       name: "Soda Syrup",
+//       category: "Beverages",
+//       unit: "liters",
+//       minThreshold: 15,
+//       quantity: 18,
+//     },
+
+//     // Alcohol
+//     {
+//       name: "Vodka",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 10,
+//       quantity: 25,
+//     },
+//     {
+//       name: "Whiskey",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 8,
+//       quantity: 15,
+//     },
+//     {
+//       name: "Gin",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 6,
+//       quantity: 10,
+//     },
+//     {
+//       name: "Rum",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 6,
+//       quantity: 12,
+//     },
+//     {
+//       name: "Tequila",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 5,
+//       quantity: 3,
+//     }, // Low stock
+//     {
+//       name: "Red Wine",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 15,
+//       quantity: 28,
+//     },
+//     {
+//       name: "White Wine",
+//       category: "Alcohol",
+//       unit: "bottles",
+//       minThreshold: 15,
+//       quantity: 22,
+//     },
+//     {
+//       name: "Beer",
+//       category: "Alcohol",
+//       unit: "cases",
+//       minThreshold: 20,
+//       quantity: 35,
+//     },
+
+//     // Dry Goods
+//     {
+//       name: "Flour",
+//       category: "Dry Goods",
+//       unit: "kg",
+//       minThreshold: 25,
+//       quantity: 40,
+//     },
+//     {
+//       name: "Sugar",
+//       category: "Dry Goods",
+//       unit: "kg",
+//       minThreshold: 20,
+//       quantity: 35,
+//     },
+//     {
+//       name: "Rice",
+//       category: "Dry Goods",
+//       unit: "kg",
+//       minThreshold: 20,
+//       quantity: 30,
+//     },
+//     {
+//       name: "Pasta",
+//       category: "Dry Goods",
+//       unit: "kg",
+//       minThreshold: 15,
+//       quantity: 18,
+//     },
+//     {
+//       name: "Olive Oil",
+//       category: "Dry Goods",
+//       unit: "liters",
+//       minThreshold: 10,
+//       quantity: 14,
+//     },
+//     {
+//       name: "Spices",
+//       category: "Dry Goods",
+//       unit: "kg",
+//       minThreshold: 5,
+//       quantity: 7,
+//     },
+
+//     // Cleaning Supplies
+//     {
+//       name: "Dish Soap",
+//       category: "Cleaning",
+//       unit: "bottles",
+//       minThreshold: 5,
+//       quantity: 8,
+//     },
+//     {
+//       name: "Sanitizer",
+//       category: "Cleaning",
+//       unit: "bottles",
+//       minThreshold: 5,
+//       quantity: 6,
+//     },
+//     {
+//       name: "Paper Towels",
+//       category: "Cleaning",
+//       unit: "rolls",
+//       minThreshold: 20,
+//       quantity: 25,
+//     },
+//   ];
+
+//   for (const item of inventoryItems) {
+//     await db.inventory.create({
+//       data: {
+//         itemName: item.name,
+//         category: item.category,
+//         quantity: item.quantity,
+//         unit: item.unit,
+//         minThreshold: item.minThreshold,
+//         lastRestocked: subDays(new Date(), Math.floor(Math.random() * 7)),
+//       },
+//     });
+//   }
+
+//   console.log(`Created ${inventoryItems.length} inventory items`);
+// }
+
+// async function createMenuItems() {
+//   console.log("Creating menu items...");
+
+//   const menuItems = [
+//     // Appetizers
+//     {
+//       name: "Bruschetta",
+//       description:
+//         "Toasted bread topped with fresh tomatoes, garlic, and basil",
+//       price: 8.99,
+//       category: ItemCategory.APPETIZER,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 10,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 250,
+//       ingredients: ["Bread", "Tomatoes", "Garlic", "Basil", "Olive Oil"],
+//       tags: ["Vegetarian", "Italian"],
+//       imageUrl: "/images/bruschetta.jpg",
+//     },
+//     {
+//       name: "Calamari Fritti",
+//       description: "Crispy fried squid served with marinara sauce",
+//       price: 12.99,
+//       category: ItemCategory.APPETIZER,
+//       station: PreparationStation.FRY_STATION,
+//       prepTime: 15,
+//       vegetarian: false,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 450,
+//       ingredients: ["Squid", "Flour", "Eggs", "Breadcrumbs", "Marinara"],
+//       tags: ["Seafood", "Fried"],
+//       imageUrl: "/images/calamari.jpg",
+//     },
+//     {
+//       name: "Stuffed Mushrooms",
+//       description: "Mushrooms filled with herb cream cheese and breadcrumbs",
+//       price: 10.99,
+//       category: ItemCategory.APPETIZER,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 12,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 320,
+//       ingredients: ["Mushrooms", "Cream Cheese", "Herbs", "Breadcrumbs"],
+//       tags: ["Vegetarian", "Baked"],
+//       imageUrl: "/images/stuffed-mushrooms.jpg",
+//     },
+
+//     // Main Courses
+//     {
+//       name: "Grilled Salmon",
+//       description:
+//         "Fresh Atlantic salmon with lemon butter sauce and seasonal vegetables",
+//       price: 24.99,
+//       category: ItemCategory.MAIN_COURSE,
+//       station: PreparationStation.GRILL_STATION,
+//       prepTime: 20,
+//       vegetarian: false,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 650,
+//       ingredients: ["Salmon", "Lemon", "Butter", "Vegetables", "Herbs"],
+//       tags: ["Seafood", "Healthy"],
+//       imageUrl: "/images/grilled-salmon.jpg",
+//     },
+//     {
+//       name: "Beef Tenderloin",
+//       description: "8oz center-cut beef tenderloin with red wine reduction",
+//       price: 34.99,
+//       category: ItemCategory.MAIN_COURSE,
+//       station: PreparationStation.GRILL_STATION,
+//       prepTime: 25,
+//       vegetarian: false,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 800,
+//       ingredients: ["Beef", "Red Wine", "Butter", "Thyme", "Garlic"],
+//       tags: ["Premium", "Steak"],
+//       imageUrl: "/images/beef-tenderloin.jpg",
+//     },
+//     {
+//       name: "Chicken Parmesan",
+//       description: "Breaded chicken breast with marinara and melted mozzarella",
+//       price: 18.99,
+//       category: ItemCategory.MAIN_COURSE,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 18,
+//       vegetarian: false,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 950,
+//       ingredients: [
+//         "Chicken",
+//         "Marinara",
+//         "Mozzarella",
+//         "Parmesan",
+//         "Breadcrumbs",
+//       ],
+//       tags: ["Italian", "Popular"],
+//       imageUrl: "/images/chicken-parmesan.jpg",
+//     },
+//     {
+//       name: "Vegetable Lasagna",
+//       description: "Layers of pasta with seasonal vegetables and three cheeses",
+//       price: 16.99,
+//       category: ItemCategory.MAIN_COURSE,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 15,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 720,
+//       ingredients: ["Pasta", "Zucchini", "Spinach", "Ricotta", "Mozzarella"],
+//       tags: ["Vegetarian", "Italian"],
+//       imageUrl: "/images/vegetable-lasagna.jpg",
+//     },
+
+//     // Desserts
+//     {
+//       name: "Tiramisu",
+//       description:
+//         "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone",
+//       price: 8.99,
+//       category: ItemCategory.DESSERT,
+//       station: PreparationStation.DESSERT_STATION,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 450,
+//       ingredients: ["Ladyfingers", "Coffee", "Mascarpone", "Cocoa", "Rum"],
+//       tags: ["Italian", "Popular"],
+//       imageUrl: "/images/tiramisu.jpg",
+//     },
+//     {
+//       name: "Chocolate Lava Cake",
+//       description:
+//         "Warm chocolate cake with a molten center, served with vanilla ice cream",
+//       price: 9.99,
+//       category: ItemCategory.DESSERT,
+//       station: PreparationStation.DESSERT_STATION,
+//       prepTime: 12,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 580,
+//       ingredients: ["Chocolate", "Butter", "Eggs", "Flour", "Sugar"],
+//       tags: ["Chocolate", "Warm"],
+//       imageUrl: "/images/lava-cake.jpg",
+//     },
+//     {
+//       name: "New York Cheesecake",
+//       description: "Creamy classic cheesecake with berry compote",
+//       price: 7.99,
+//       category: ItemCategory.DESSERT,
+//       station: PreparationStation.DESSERT_STATION,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 520,
+//       ingredients: [
+//         "Cream Cheese",
+//         "Graham Crackers",
+//         "Sugar",
+//         "Eggs",
+//         "Berries",
+//       ],
+//       tags: ["Classic"],
+//       imageUrl: "/images/cheesecake.jpg",
+//     },
+
+//     // Beverages
+//     {
+//       name: "Fresh Lemonade",
+//       description: "Freshly squeezed lemons with a hint of mint",
+//       price: 4.99,
+//       category: ItemCategory.BEVERAGE,
+//       station: PreparationStation.BAR,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 180,
+//       ingredients: ["Lemons", "Sugar", "Mint", "Water"],
+//       tags: ["Refreshing", "Non-Alcoholic"],
+//       imageUrl: "/images/lemonade.jpg",
+//     },
+//     {
+//       name: "Iced Caramel Latte",
+//       description: "Espresso with milk, caramel syrup, and ice",
+//       price: 5.99,
+//       category: ItemCategory.BEVERAGE,
+//       station: PreparationStation.BAR,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 250,
+//       ingredients: ["Espresso", "Milk", "Caramel Syrup", "Ice"],
+//       tags: ["Coffee", "Cold"],
+//       imageUrl: "/images/iced-latte.jpg",
+//     },
+//     {
+//       name: "Fresh Orange Juice",
+//       description: "Freshly squeezed orange juice",
+//       price: 4.99,
+//       category: ItemCategory.BEVERAGE,
+//       station: PreparationStation.BAR,
+//       prepTime: 3,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 150,
+//       ingredients: ["Oranges"],
+//       tags: ["Fresh", "Healthy"],
+//       imageUrl: "/images/orange-juice.jpg",
+//     },
+
+//     // Alcoholic Beverages
+//     {
+//       name: "Classic Margarita",
+//       description: "Tequila, lime juice, and orange liqueur",
+//       price: 11.99,
+//       category: ItemCategory.ALCOHOLIC,
+//       station: PreparationStation.BAR,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 220,
+//       ingredients: ["Tequila", "Lime Juice", "Triple Sec", "Simple Syrup"],
+//       tags: ["Cocktail", "Popular"],
+//       imageUrl: "/images/margarita.jpg",
+//     },
+//     {
+//       name: "Old Fashioned",
+//       description: "Bourbon, sugar, bitters, and orange twist",
+//       price: 13.99,
+//       category: ItemCategory.ALCOHOLIC,
+//       station: PreparationStation.BAR,
+//       prepTime: 5,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 190,
+//       ingredients: [
+//         "Bourbon",
+//         "Sugar Cube",
+//         "Angostura Bitters",
+//         "Orange Peel",
+//       ],
+//       tags: ["Classic", "Strong"],
+//       imageUrl: "/images/old-fashioned.jpg",
+//     },
+//     {
+//       name: "Mojito",
+//       description: "White rum, mint, lime juice, sugar, and soda water",
+//       price: 10.99,
+//       category: ItemCategory.ALCOHOLIC,
+//       station: PreparationStation.BAR,
+//       prepTime: 6,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 180,
+//       ingredients: ["Rum", "Mint", "Lime", "Sugar", "Soda Water"],
+//       tags: ["Refreshing", "Popular"],
+//       imageUrl: "/images/mojito.jpg",
+//     },
+//     {
+//       name: "Red Wine - Cabernet",
+//       description: "Full-bodied red wine with notes of black cherry and oak",
+//       price: 9.99,
+//       category: ItemCategory.ALCOHOLIC,
+//       station: PreparationStation.BAR,
+//       prepTime: 2,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 125,
+//       ingredients: ["Cabernet Sauvignon"],
+//       tags: ["Wine", "Red"],
+//       imageUrl: "/images/cabernet.jpg",
+//     },
+
+//     // Snacks
+//     {
+//       name: "French Fries",
+//       description: "Crispy golden fries with sea salt",
+//       price: 5.99,
+//       category: ItemCategory.SNACK,
+//       station: PreparationStation.FRY_STATION,
+//       prepTime: 8,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 420,
+//       ingredients: ["Potatoes", "Oil", "Salt"],
+//       tags: ["Classic", "Shareable"],
+//       imageUrl: "/images/fries.jpg",
+//     },
+//     {
+//       name: "Truffle Fries",
+//       description: "Fries with truffle oil, parmesan, and parsley",
+//       price: 8.99,
+//       category: ItemCategory.SNACK,
+//       station: PreparationStation.FRY_STATION,
+//       prepTime: 10,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 480,
+//       ingredients: ["Potatoes", "Truffle Oil", "Parmesan", "Parsley"],
+//       tags: ["Gourmet", "Shareable"],
+//       imageUrl: "/images/truffle-fries.jpg",
+//     },
+//     {
+//       name: "Onion Rings",
+//       description: "Beer-battered onion rings with dipping sauce",
+//       price: 6.99,
+//       category: ItemCategory.SNACK,
+//       station: PreparationStation.FRY_STATION,
+//       prepTime: 10,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: true,
+//       calories: 520,
+//       ingredients: ["Onions", "Beer Batter", "Flour", "Spices"],
+//       tags: ["Shareable", "Fried"],
+//       imageUrl: "/images/onion-rings.jpg",
+//     },
+
+//     // Side Dishes
+//     {
+//       name: "Garlic Mashed Potatoes",
+//       description: "Creamy mashed potatoes with roasted garlic",
+//       price: 4.99,
+//       category: ItemCategory.SIDE_DISH,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 10,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 280,
+//       ingredients: ["Potatoes", "Garlic", "Butter", "Cream"],
+//       tags: ["Comfort Food"],
+//       imageUrl: "/images/mashed-potatoes.jpg",
+//     },
+//     {
+//       name: "Grilled Vegetables",
+//       description: "Seasonal vegetables grilled with herbs",
+//       price: 5.99,
+//       category: ItemCategory.SIDE_DISH,
+//       station: PreparationStation.GRILL_STATION,
+//       prepTime: 8,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 120,
+//       ingredients: ["Zucchini", "Bell Peppers", "Eggplant", "Herbs"],
+//       tags: ["Healthy", "Vegetarian"],
+//       imageUrl: "/images/grilled-vegetables.jpg",
+//     },
+//     {
+//       name: "Steamed Broccoli",
+//       description: "Fresh broccoli with lemon butter",
+//       price: 4.99,
+//       category: ItemCategory.SIDE_DISH,
+//       station: PreparationStation.KITCHEN,
+//       prepTime: 6,
+//       vegetarian: true,
+//       spicy: false,
+//       alcoholic: false,
+//       calories: 80,
+//       ingredients: ["Broccoli", "Lemon", "Butter"],
+//       tags: ["Healthy", "Light"],
+//       imageUrl: "/images/broccoli.jpg",
+//     },
+//   ];
+
+//   const createdItems = [];
+//   for (const item of menuItems) {
+//     const menuItem = await db.menuItem.create({
+//       data: {
+//         name: item.name,
+//         description: item.description,
+//         price: item.price,
+//         category: item.category,
+//         preparationStation: item.station,
+//         preparationTime: item.prepTime,
+//         isVegetarian: item.vegetarian,
+//         isSpicy: item.spicy,
+//         isAlcoholic: item.alcoholic,
+//         calories: item.calories,
+//         ingredients: item.ingredients,
+//         tags: item.tags,
+//         imageUrl: item.imageUrl,
+//         isAvailable: Math.random() > 0.1, // 90% available
+//       },
+//     });
+//     createdItems.push(menuItem);
+//   }
+
+//   console.log(`Created ${createdItems.length} menu items`);
+//   return createdItems;
+// }
+
+// // async function createCarts() {
+// //   console.log("Creating shopping carts...");
+
+// //   const users = await db.user.findMany({
+// //     where: { role: UserRole.USER },
+// //     take: 20,
+// //   });
+
+// //   const menuItems = await db.menuItem.findMany();
+
+// //   for (const user of users) {
+// //     if (Math.random() > 0.7) {
+// //       // 30% of users have active carts
+// //       const cart = await db.cart.create({
+// //         data: {
+// //           userId: user.id,
+// //         },
+// //       });
+
+// //       // Add 1-5 random items to cart
+// //       const numItems = Math.floor(Math.random() * 5) + 1;
+// //       for (let i = 0; i < numItems; i++) {
+// //         const menuItem =
+// //           menuItems[Math.floor(Math.random() * menuItems.length)];
+// //         await db.cartItem.create({
+// //           data: {
+// //             cartId: cart.id,
+// //             menuItemId: menuItem.id,
+// //             quantity: Math.floor(Math.random() * 3) + 1,
+// //             specialInstructions:
+// //               Math.random() > 0.7 ? "No onions please" : null,
+// //           },
+// //         });
+// //       }
+// //     }
+// //   }
+
+// //   // Create some guest carts
+// //   for (let i = 0; i < 5; i++) {
+// //     const sessionId = `session_${Math.random().toString(36).substring(7)}`;
+// //     const cart = await db.cart.create({
+// //       data: {
+// //         sessionId,
+// //       },
+// //     });
+
+// //     const numItems = Math.floor(Math.random() * 3) + 1;
+// //     for (let j = 0; j < numItems; j++) {
+// //       const menuItem = menuItems[Math.floor(Math.random() * menuItems.length)];
+// //       await db.cartItem.create({
+// //         data: {
+// //           cartId: cart.id,
+// //           menuItemId: menuItem.id,
+// //           quantity: Math.floor(Math.random() * 2) + 1,
+// //         },
+// //       });
+// //     }
+// //   }
+
+// //   console.log("Created carts");
+// // }
+
+// async function createOrders() {
+//   console.log("Creating orders...");
+
+//   const users = await db.user.findMany({
+//     where: { role: UserRole.USER },
+//   });
+
+//   const menuItems = await db.menuItem.findMany();
+//   const addresses = await db.address.findMany();
+//   const tables = await db.table.findMany();
+
+//   // Generate orders for the last 90 days
+//   const startDate = subDays(new Date(), 90);
+//   const endDate = new Date();
+
+//   let orderNumber = 1000;
+//   const orders = [];
+
+//   for (let day = 0; day <= 90; day++) {
+//     const currentDate = addDays(startDate, day);
+
+//     // Determine number of orders for this day (weekends have more orders)
+//     const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+//     const baseOrders = isWeekend ? 30 : 20;
+
+//     // Add some randomness
+//     const numOrders = Math.floor(baseOrders + (Math.random() * 20 - 10));
+
+//     for (let i = 0; i < numOrders; i++) {
+//       // Random order time throughout the day (peak hours: 12-2pm, 6-9pm)
+//       let hour;
+//       if (Math.random() > 0.6) {
+//         // Peak hours
+//         hour =
+//           Math.random() > 0.5
+//             ? 12 + Math.floor(Math.random() * 2) // Lunch: 12-2pm
+//             : 18 + Math.floor(Math.random() * 3); // Dinner: 6-9pm
+//       } else {
+//         // Off-peak
+//         hour = Math.floor(Math.random() * 24);
+//       }
+
+//       const minute = Math.floor(Math.random() * 60);
+//       const orderDate = setMinutes(setHours(currentDate, hour), minute);
+
+//       // Determine order type
+//       const orderTypeRoll = Math.random();
+//       let orderType: OrderType;
+//       let tableNumber = null;
+//       let deliveryAddressId = null;
+
+//       if (orderTypeRoll < 0.5) {
+//         orderType = OrderType.DINE_IN;
+//         tableNumber =
+//           tables[Math.floor(Math.random() * tables.length)].tableNumber;
+//       } else if (orderTypeRoll < 0.75) {
+//         orderType = OrderType.TAKEAWAY;
+//       } else {
+//         orderType = OrderType.DELIVERY;
+//         deliveryAddressId =
+//           addresses.length > 0
+//             ? addresses[Math.floor(Math.random() * addresses.length)].id
+//             : null;
+//       }
+
+//       // Random user (80% registered, 20% guest - represented by random user)
+//       const user = users[Math.floor(Math.random() * users.length)];
+
+//       // Generate order items
+//       const numItems = Math.floor(Math.random() * 4) + 1;
+//       const orderItems = [];
+//       let totalAmount = 0;
+
+//       for (let j = 0; j < numItems; j++) {
+//         const menuItem =
+//           menuItems[Math.floor(Math.random() * menuItems.length)];
+//         const quantity = Math.floor(Math.random() * 3) + 1;
+//         const unitPrice = menuItem.price;
+//         const totalPrice = unitPrice * quantity;
+//         totalAmount += totalPrice;
+
+//         orderItems.push({
+//           menuItemId: menuItem.id,
+//           quantity,
+//           unitPrice,
+//           totalPrice,
+//           specialInstructions:
+//             Math.random() > 0.8 ? "Extra sauce please" : null,
+//         });
+//       }
+
+//       // Calculate taxes and discounts
+//       const taxAmount = totalAmount * 0.08; // 8% tax
+//       const discountAmount = Math.random() > 0.9 ? totalAmount * 0.1 : 0; // 10% discount occasionally
+//       const finalAmount = totalAmount + taxAmount - discountAmount;
+
+//       // Determine order status based on order date
+//       let status: OrderStatus;
+//       let paymentStatus: PaymentStatus;
+//       const now = new Date();
+
+//       if (orderDate > now) {
+//         // Future orders (shouldn't happen, but just in case)
+//         status = OrderStatus.PENDING;
+//         paymentStatus = PaymentStatus.PENDING;
+//       } else {
+//         const hoursSinceOrder =
+//           (now.getTime() - orderDate.getTime()) / (1000 * 60 * 60);
+
+//         if (hoursSinceOrder < 1) {
+//           // Recent orders
+//           const statusRoll = Math.random();
+//           if (statusRoll < 0.3) status = OrderStatus.PENDING;
+//           else if (statusRoll < 0.6) status = OrderStatus.CONFIRMED;
+//           else if (statusRoll < 0.8) status = OrderStatus.PREPARING;
+//           else status = OrderStatus.READY;
+
+//           paymentStatus =
+//             Math.random() > 0.2 ? PaymentStatus.PAID : PaymentStatus.PENDING;
+//         } else if (hoursSinceOrder < 3) {
+//           // Orders from a few hours ago
+//           const statusRoll = Math.random();
+//           if (statusRoll < 0.2) status = OrderStatus.PREPARING;
+//           else if (statusRoll < 0.5) status = OrderStatus.READY;
+//           else if (statusRoll < 0.8) status = OrderStatus.SERVED;
+//           else status = OrderStatus.COMPLETED;
+
+//           paymentStatus =
+//             Math.random() > 0.1 ? PaymentStatus.PAID : PaymentStatus.PENDING;
+//         } else {
+//           // Older orders - mostly completed
+//           const statusRoll = Math.random();
+//           if (statusRoll < 0.7) status = OrderStatus.COMPLETED;
+//           else if (statusRoll < 0.85) status = OrderStatus.CANCELLED;
+//           else status = OrderStatus.SERVED;
+
+//           paymentStatus =
+//             status === OrderStatus.CANCELLED
+//               ? PaymentStatus.REFUNDED
+//               : Math.random() > 0.05
+//                 ? PaymentStatus.PAID
+//                 : PaymentStatus.FAILED;
+//         }
+//       }
+
+//       // Calculate timestamps based on status
+//       let estimatedReadyTime = null;
+//       let readyAt = null;
+//       let servedAt = null;
+//       let completedAt = null;
+//       let cancelledAt = null;
+
+//       if (status !== OrderStatus.PENDING && status !== OrderStatus.CANCELLED) {
+//         estimatedReadyTime = addMinutes(orderDate, 25); // Estimated 25 min prep time
+//       }
+
+//       if (
+//         status === OrderStatus.READY ||
+//         status === OrderStatus.SERVED ||
+//         status === OrderStatus.COMPLETED
+//       ) {
+//         readyAt = addMinutes(orderDate, 20 + Math.floor(Math.random() * 10));
+//       }
+
+//       if (status === OrderStatus.SERVED || status === OrderStatus.COMPLETED) {
+//         servedAt = addMinutes(
+//           readyAt || orderDate,
+//           5 + Math.floor(Math.random() * 10),
+//         );
+//       }
+
+//       if (status === OrderStatus.COMPLETED) {
+//         completedAt = addMinutes(
+//           servedAt || orderDate,
+//           30 + Math.floor(Math.random() * 30),
+//         );
+//       }
+
+//       if (status === OrderStatus.CANCELLED) {
+//         cancelledAt = addMinutes(
+//           orderDate,
+//           10 + Math.floor(Math.random() * 20),
+//         );
+//       }
+
+//       // Create the order
+//       const order = await db.order.create({
+//         data: {
+//           orderNumber: `ORD-${orderNumber++}`,
+//           userId: user.id,
+//           tableNumber,
+//           orderType,
+//           status,
+//           paymentStatus,
+//           paymentMethod: [
+//             PaymentMethod.COD,
+//             PaymentMethod.ESEWA,
+//             PaymentMethod.KHALTI,
+//           ][Math.floor(Math.random() * 3)],
+//           totalAmount,
+//           taxAmount,
+//           discountAmount,
+//           finalAmount,
+//           deliveryAddressId,
+//           specialInstructions:
+//             Math.random() > 0.9 ? "Please deliver to back door" : null,
+//           estimatedReadyTime,
+//           readyAt,
+//           servedAt,
+//           completedAt,
+//           cancelledAt,
+//           createdAt: orderDate,
+//           items: {
+//             create: orderItems.map((item) => ({
+//               ...item,
+//               isReady:
+//                 status === OrderStatus.READY ||
+//                 status === OrderStatus.SERVED ||
+//                 status === OrderStatus.COMPLETED,
+//               readyAt:
+//                 status === OrderStatus.READY ||
+//                 status === OrderStatus.SERVED ||
+//                 status === OrderStatus.COMPLETED
+//                   ? addMinutes(orderDate, 20 + Math.floor(Math.random() * 10))
+//                   : null,
+//             })),
+//           },
+//         },
+//       });
+
+//       orders.push(order);
+
+//       // Create station assignments for each item
+//       const orderItemsFromDb = await db.orderItem.findMany({
+//         where: { orderId: order.id },
+//         include: { menuItem: true },
+//       });
+
+//       for (const orderItem of orderItemsFromDb) {
+//         await db.orderStationAssignment.create({
+//           data: {
+//             orderItemId: orderItem.id,
+//             station: orderItem.menuItem.preparationStation,
+//             assignedTo: null, // Will be assigned in staff shifts
+//             status: orderItem.isReady ? "COMPLETED" : "PENDING",
+//             estimatedCompletionTime: addMinutes(
+//               orderDate,
+//               orderItem.menuItem.preparationTime,
+//             ),
+//             startedAt: orderItem.isReady ? addMinutes(orderDate, 5) : null,
+//             completedAt: orderItem.readyAt,
+//           },
+//         });
+//       }
+
+//       // Create payment record
+//       if (order.paymentMethod) {
+//         await db.payment.create({
+//           data: {
+//             orderId: order.id,
+//             amount: finalAmount,
+//             paymentMethod: order.paymentMethod,
+//             status: order.paymentStatus,
+//             transactionId: `TXN-${Math.random().toString(36).substring(7).toUpperCase()}`,
+//             paymentGateway: ["Stripe", "PayPal", "ESEWA"][
+//               Math.floor(Math.random() * 3)
+//             ],
+//             paidAt:
+//               order.paymentStatus === PaymentStatus.PAID
+//                 ? addMinutes(orderDate, 5)
+//                 : null,
+//           },
+//         });
+//       }
+//     }
+//   }
+
+//   console.log(`Created ${orders.length} orders`);
+//   return orders;
+// }
+
+// async function createReservations() {
+//   console.log("Creating reservations...");
+
+//   const users = await db.user.findMany({
+//     where: { role: UserRole.USER },
+//   });
+//   const tables = await db.table.findMany();
+
+//   // Create reservations for the next 30 days
+//   const startDate = new Date();
+//   const endDate = addDays(startDate, 30);
+
+//   for (let day = 0; day < 30; day++) {
+//     const currentDate = addDays(startDate, day);
+
+//     // More reservations on weekends
+//     const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+//     const numReservations = isWeekend ? 15 : 8;
+
+//     for (let i = 0; i < numReservations; i++) {
+//       // Random time between 11 AM and 10 PM
+//       const hour = 11 + Math.floor(Math.random() * 11);
+//       const minute = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+
+//       const reservationDate = setMinutes(setHours(currentDate, hour), minute);
+//       const partySize = [2, 4, 6][Math.floor(Math.random() * 3)];
+
+//       // Find available table (simplified - just assign random)
+//       const table = tables[Math.floor(Math.random() * tables.length)];
+//       const user = users[Math.floor(Math.random() * users.length)];
+
+//       // Random status based on date
+//       let status;
+//       const now = new Date();
+
+//       if (reservationDate < now) {
+//         // Past reservations
+//         const statusRoll = Math.random();
+//         if (statusRoll < 0.7) status = "COMPLETED";
+//         else if (statusRoll < 0.9) status = "CANCELLED";
+//         else status = "CONFIRMED";
+//       } else {
+//         // Future reservations
+//         status = Math.random() > 0.2 ? "CONFIRMED" : "PENDING";
+//       }
+
+//       await db.reservation.create({
+//         data: {
+//           userId: user.id,
+//           reservationDate,
+//           partySize,
+//           tableNumber: table.tableNumber,
+//           specialRequests: Math.random() > 0.7 ? "Prefer window table" : null,
+//           status,
+//           checkedInAt:
+//             status === "COMPLETED" ? addMinutes(reservationDate, -5) : null,
+//           completedAt:
+//             status === "COMPLETED" ? addMinutes(reservationDate, 90) : null,
+//           cancelledAt:
+//             status === "CANCELLED" ? addMinutes(reservationDate, -30) : null,
+//           tables: {
+//             connect: { id: table.id },
+//           },
+//         },
+//       });
+//     }
+//   }
+
+//   console.log("Created reservations");
+// }
+
+// async function createStaffShifts() {
+//   console.log("Creating staff shifts...");
+
+//   const staff = await db.user.findMany({
+//     where: {
+//       role: {
+//         in: [
+//           UserRole.CHEF,
+//           UserRole.BARTENDER,
+//           UserRole.WAITER,
+//           UserRole.MANAGER,
+//         ],
+//       },
+//     },
+//   });
+
+//   // Create shifts for the last 30 days and next 7 days
+//   const startDate = subDays(new Date(), 30);
+//   const endDate = addDays(new Date(), 7);
+
+//   for (let day = 0; day <= 37; day++) {
+//     const currentDate = addDays(startDate, day);
+//     const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+
+//     // Different shift patterns for different roles
+//     for (const staffMember of staff) {
+//       // Not everyone works every day
+//       const workProbability = isWeekend ? 0.6 : 0.8;
+//       if (Math.random() > workProbability) continue;
+
+//       // Determine shift time based on role
+//       let startHour, endHour;
+
+//       if (staffMember.role === UserRole.CHEF) {
+//         // Chefs come early
+//         startHour = 8 + Math.floor(Math.random() * 2);
+//         endHour = 16 + Math.floor(Math.random() * 2);
+//       } else if (staffMember.role === UserRole.BARTENDER) {
+//         // Bartenders come later
+//         startHour = 16 + Math.floor(Math.random() * 2);
+//         endHour = 24 + Math.floor(Math.random() * 2);
+//       } else {
+//         // Waiters and managers have split shifts
+//         const shiftType = Math.random();
+//         if (shiftType < 0.4) {
+//           // Morning shift
+//           startHour = 10 + Math.floor(Math.random() * 2);
+//           endHour = 18 + Math.floor(Math.random() * 2);
+//         } else if (shiftType < 0.8) {
+//           // Evening shift
+//           startHour = 16 + Math.floor(Math.random() * 2);
+//           endHour = 24 + Math.floor(Math.random() * 2);
+//         } else {
+//           // Double shift (long day)
+//           startHour = 10 + Math.floor(Math.random() * 2);
+//           endHour = 22 + Math.floor(Math.random() * 2);
+//         }
+//       }
+
+//       const startTime = setHours(currentDate, startHour);
+//       const endTime = setHours(currentDate, endHour);
+
+//       // Determine if shift is active (checked in/out)
+//       const now = new Date();
+//       let checkedInAt = null;
+//       let checkedOutAt = null;
+
+//       if (currentDate.toDateString() === now.toDateString()) {
+//         // Today's shift
+//         if (startTime <= now) {
+//           checkedInAt = startTime;
+//           if (endTime <= now) {
+//             checkedOutAt = endTime;
+//           }
+//         }
+//       } else if (currentDate < now) {
+//         // Past shift
+//         checkedInAt = startTime;
+//         checkedOutAt = endTime;
+//       }
+
+//       await db.staffShift.create({
+//         data: {
+//           userId: staffMember.id,
+//           shiftDate: currentDate,
+//           startTime,
+//           endTime,
+//           station:
+//             staffMember.role === UserRole.CHEF
+//               ? [
+//                   PreparationStation.KITCHEN,
+//                   PreparationStation.GRILL_STATION,
+//                   PreparationStation.FRY_STATION,
+//                 ][Math.floor(Math.random() * 3)]
+//               : staffMember.role === UserRole.BARTENDER
+//                 ? PreparationStation.BAR
+//                 : null,
+//           checkedInAt,
+//           checkedOutAt,
+//         },
+//       });
+//     }
+//   }
+
+//   console.log("Created staff shifts");
+// }
+
+// async function createNotifications() {
+//   console.log("Creating notifications...");
+
+//   const users = await db.user.findMany();
+//   const orders = await db.order.findMany({
+//     take: 50,
+//     orderBy: { createdAt: "desc" },
+//   });
+
+//   const notificationTypes = [
+//     NotificationType.ORDER_READY,
+//     NotificationType.ORDER_PREPARING,
+//     NotificationType.ORDER_SERVED,
+//     NotificationType.ORDER_CANCELLED,
+//     NotificationType.GENERAL,
+//   ];
+
+//   // Create notifications for users
+//   for (const user of users) {
+//     const numNotifications = Math.floor(Math.random() * 10) + 5;
+
+//     for (let i = 0; i < numNotifications; i++) {
+//       const daysAgo = Math.floor(Math.random() * 30);
+//       const notificationDate = subDays(new Date(), daysAgo);
+
+//       const type =
+//         notificationTypes[Math.floor(Math.random() * notificationTypes.length)];
+//       const order =
+//         Math.random() > 0.5 && orders.length > 0
+//           ? orders[Math.floor(Math.random() * orders.length)]
+//           : null;
+
+//       let title, message;
+//       switch (type) {
+//         case NotificationType.ORDER_READY:
+//           title = "Order Ready for Pickup";
+//           message = `Your order #${order?.orderNumber || "ORD-1234"} is ready for pickup.`;
+//           break;
+//         case NotificationType.ORDER_PREPARING:
+//           title = "Order is Being Prepared";
+//           message = `Your order #${order?.orderNumber || "ORD-1234"} is now being prepared.`;
+//           break;
+//         case NotificationType.ORDER_SERVED:
+//           title = "Order Served";
+//           message = `Your order #${order?.orderNumber || "ORD-1234"} has been served. Enjoy your meal!`;
+//           break;
+//         case NotificationType.ORDER_CANCELLED:
+//           title = "Order Cancelled";
+//           message = `Your order #${order?.orderNumber || "ORD-1234"} has been cancelled.`;
+//           break;
+//         default:
+//           title = "Special Offer";
+//           message = "Check out our new seasonal menu items!";
+//       }
+
+//       await db.notification.create({
+//         data: {
+//           userId: user.id,
+//           orderId: order?.id,
+//           type,
+//           title,
+//           message,
+//           isRead: Math.random() > 0.3, // 70% read
+//           createdAt: notificationDate,
+//         },
+//       });
+//     }
+//   }
+
+//   console.log("Created notifications");
+// }
+
+// main()
+//   .catch((e) => {
+//     console.error("Error during seed:", e);
+//     process.exit(1);
+//   })
+//   .finally(async () => {
+//     await db.$disconnect();
+//   });
