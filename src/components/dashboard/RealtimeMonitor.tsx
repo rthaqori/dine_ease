@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Activity, Clock, ChefHat, Wine, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { formatCurrency } from "@/lib/formatters";
 
 export function RealtimeMonitor() {
   const { data: stats, isLoading } = useRealtimeStats();
@@ -53,7 +54,7 @@ export function RealtimeMonitor() {
     },
     {
       title: "Today's Revenue",
-      value: `$${stats?.todayStats.revenue.toLocaleString() || 0}`,
+      value: `${formatCurrency(stats?.todayStats.revenue || 0)}`,
       icon: Clock,
       color: "text-green-500",
       bg: "bg-green-50",

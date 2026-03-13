@@ -1,12 +1,13 @@
 "use client";
 
 import { KhaltiPaymentButton } from "@/components/buttons/KhaltiPaymentButton";
+import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function PaymentPage() {
   const searchParams = useSearchParams();
-  const orderId = searchParams.get("orderId") || "cmmnloyi90000vsv4hj01twak";
+  const orderId = searchParams.get("orderId") || "cmmolg96h0011x0v450rjg0x9";
 
   const apiRoutes = [
     "/api/stats/customers/acquisition",
@@ -23,11 +24,8 @@ export default function PaymentPage() {
     "/api/stats/revenue/hourly",
     "/api/stats/revenue/monthly",
     "/api/stats/staff/performance",
+    "/api/stats/tables/occupancy",
   ];
-
-  useEffect(() => {
-    fetchAllStats();
-  }, []);
 
   async function fetchAllStats() {
     const results = await Promise.all(
@@ -60,6 +58,7 @@ export default function PaymentPage() {
 
         <KhaltiPaymentButton orderId={orderId} />
       </div>
+      <Button onClick={() => fetchAllStats()}>Fetch Data</Button>
     </div>
   );
 }

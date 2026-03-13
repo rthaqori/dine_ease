@@ -25,6 +25,7 @@ import {
   Cell,
 } from "recharts";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { formatCurrency } from "@/lib/formatters";
 
 const categoryColors = {
   APPETIZER: "#f97316",
@@ -60,10 +61,9 @@ export function MenuPerformance() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="top-items">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="top-items">Top Items</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="stations">Stations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="top-items" className="space-y-4">
@@ -104,7 +104,7 @@ export function MenuPerformance() {
                         {item.quantity}
                       </TableCell>
                       <TableCell className="text-right">
-                        ${item.revenue.toLocaleString()}
+                        {formatCurrency(item.revenue)}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">

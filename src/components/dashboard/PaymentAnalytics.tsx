@@ -14,6 +14,7 @@ import {
   Legend,
 } from "recharts";
 import { CreditCard, Wallet, TrendingUp, AlertCircle } from "lucide-react";
+import { formatCurrency } from "@/lib/formatters";
 
 const PAYMENT_COLORS = {
   COD: "#22c55e",
@@ -109,7 +110,7 @@ export function PaymentAnalytics() {
                     <div className="flex justify-between text-sm">
                       <span>{method.method}</span>
                       <span className="font-medium">
-                        ${method.totalAmount.toLocaleString()}
+                        {formatCurrency(method.totalAmount)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -159,7 +160,7 @@ export function PaymentAnalytics() {
         <div className="grid grid-cols-2 gap-4 pt-4 border-t">
           <div>
             <p className="text-xs text-muted-foreground">Total Volume</p>
-            <p className="text-xl font-bold">${totalAmount.toLocaleString()}</p>
+            <p className="text-xl font-bold">{formatCurrency(totalAmount)}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Avg Success Rate</p>

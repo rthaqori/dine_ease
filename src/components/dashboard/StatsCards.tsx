@@ -11,6 +11,7 @@ import {
   Clock,
   AlertTriangle,
 } from "lucide-react";
+import { formatCurrency } from "@/lib/formatters";
 
 interface StatsCardsProps {
   overview?: DashboardOverview;
@@ -40,7 +41,7 @@ export function StatsCards({ overview, isLoading }: StatsCardsProps) {
   const stats = [
     {
       title: "Total Revenue",
-      value: `$${overview?.revenue.today.toLocaleString()}`,
+      value: `${formatCurrency(overview?.revenue.today!)}`,
       description: `+${overview?.revenue.trend.toFixed(1)}% from last week`,
       icon: DollarSign,
       trend: overview?.revenue.trend || 0,

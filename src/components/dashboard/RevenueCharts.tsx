@@ -31,6 +31,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format, subDays } from "date-fns";
+import { formatCurrency } from "@/lib/formatters";
 
 export function RevenueCharts() {
   const [dateRange, setDateRange] = useState("7d");
@@ -61,7 +62,7 @@ export function RevenueCharts() {
                 Revenue
               </span>
               <span className="font-bold text-muted-foreground">
-                ${payload[0].value.toLocaleString()}
+                {formatCurrency(payload[0].value)}
               </span>
             </div>
             <div className="flex flex-col">
@@ -80,19 +81,19 @@ export function RevenueCharts() {
   };
 
   return (
-    <Card className="col-span-4">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Revenue Analytics</CardTitle>
-        <Tabs defaultValue="daily" className="w-[400px]">
-          <TabsList>
+    <Tabs defaultValue="daily">
+      <Card className="col-span-4">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Revenue Analytics</CardTitle>
+
+          <TabsList className="w-[400px]">
             <TabsTrigger value="daily">Daily</TabsTrigger>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
             <TabsTrigger value="hourly">Hourly</TabsTrigger>
           </TabsList>
-        </Tabs>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="daily">
+        </CardHeader>
+
+        <CardContent>
           <TabsContent value="daily" className="space-y-4">
             <div className="flex justify-end">
               <Select value={dateRange} onValueChange={setDateRange}>
@@ -105,6 +106,7 @@ export function RevenueCharts() {
                 </SelectContent>
               </Select>
             </div>
+
             {dailyLoading ? (
               <Skeleton className="h-[350px] w-full" />
             ) : (
@@ -122,6 +124,7 @@ export function RevenueCharts() {
                       <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                     </linearGradient>
                   </defs>
+
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="date"
@@ -129,8 +132,10 @@ export function RevenueCharts() {
                   />
                   <YAxis yAxisId="left" />
                   <YAxis yAxisId="right" orientation="right" />
+
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
+
                   <Area
                     yAxisId="left"
                     type="monotone"
@@ -140,6 +145,7 @@ export function RevenueCharts() {
                     fill="url(#colorRevenue)"
                     name="Revenue"
                   />
+
                   <Bar
                     yAxisId="right"
                     dataKey="orders"
@@ -162,14 +168,17 @@ export function RevenueCharts() {
                   <SelectValue placeholder="Select year" />
                 </SelectTrigger>
                 <SelectContent>
-                  {[2024, 2023, 2022].map((year) => (
-                    <SelectItem key={year} value={year.toString()}>
-                      {year}
-                    </SelectItem>
-                  ))}
+                  {[2029, 2028, 2027, 2026, 2025, 2024, 2023, 2022].map(
+                    (year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ),
+                  )}
                 </SelectContent>
               </Select>
             </div>
+
             {monthlyLoading ? (
               <Skeleton className="h-[350px] w-full" />
             ) : (
@@ -181,12 +190,14 @@ export function RevenueCharts() {
                   <YAxis yAxisId="right" orientation="right" />
                   <Tooltip />
                   <Legend />
+
                   <Bar
                     yAxisId="left"
                     dataKey="revenue"
                     fill="#8884d8"
                     name="Revenue"
                   />
+
                   <Line
                     yAxisId="right"
                     type="monotone"
@@ -211,6 +222,7 @@ export function RevenueCharts() {
                   <YAxis yAxisId="right" orientation="right" />
                   <Tooltip />
                   <Legend />
+
                   <Line
                     yAxisId="left"
                     type="monotone"
@@ -218,6 +230,7 @@ export function RevenueCharts() {
                     stroke="#8884d8"
                     name="Revenue"
                   />
+
                   <Line
                     yAxisId="right"
                     type="monotone"
@@ -229,8 +242,8 @@ export function RevenueCharts() {
               </ResponsiveContainer>
             )}
           </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Tabs>
   );
 }

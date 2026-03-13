@@ -21,6 +21,7 @@ import {
   Cell,
 } from "recharts";
 import { Users, UserPlus, TrendingUp, Award } from "lucide-react";
+import { Button } from "../ui/button";
 
 const LOYALTY_COLORS = ["#22c55e", "#3b82f6", "#f97316", "#ef4444"];
 
@@ -41,88 +42,75 @@ export function CustomerInsights() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Customer Insights</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle>Customer Insights</CardTitle>
+          <div className="flex justify-end space-x-2">
+            {["week", "month", "year"].map((p) => (
+              <Button
+                key={p}
+                className={`${period === p ? "bg-blue-600 hover:bg-blue-500 text-white" : ""} capitalize py-0`}
+                variant={period === p ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPeriod(p)}
+              >
+                {p}
+              </Button>
+            ))}
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="acquisition">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="acquisition">Acquisition</TabsTrigger>
-            <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
-            <TabsTrigger value="retention">Retention</TabsTrigger>
-          </TabsList>
+        {acquisitionLoading ? (
+          <Skeleton className="h-[200px] w-full" />
+        ) : (
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={acquisitionData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="date"
+                  tickFormatter={(value) => {
+                    const date = new Date(value);
+                    return period === "week"
+                      ? date.toLocaleDateString("en-US", {
+                          weekday: "short",
+                        })
+                      : date.toLocaleDateString("en-US", {
+                          day: "numeric",
+                        });
+                  }}
+                />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="newCustomers"
+                  stroke="#22c55e"
+                  name="New"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="returningCustomers"
+                  stroke="#3b82f6"
+                  name="Returning"
+                />
+              </LineChart>
+            </ResponsiveContainer>
 
-          <TabsContent value="acquisition" className="space-y-4">
-            <div className="flex justify-end space-x-2">
-              {["week", "month", "year"].map((p) => (
-                <button
-                  key={p}
-                  className={`text-sm px-2 py-1 rounded ${
-                    period === p ? "bg-primary text-white" : "bg-muted"
-                  }`}
-                  onClick={() => setPeriod(p)}
-                >
-                  {p}
-                </button>
-              ))}
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="text-center">
+                <UserPlus className="h-5 w-5 mx-auto mb-2 text-green-500" />
+                <div className="text-2xl font-bold">{totalCustomers}</div>
+                <div className="text-xs text-muted-foreground">New</div>
+              </div>
+              <div className="text-center">
+                <Users className="h-5 w-5 mx-auto mb-2 text-blue-500" />
+                <div className="text-2xl font-bold">{returningCustomers}</div>
+                <div className="text-xs text-muted-foreground">Returning</div>
+              </div>
             </div>
-
-            {acquisitionLoading ? (
-              <Skeleton className="h-[200px] w-full" />
-            ) : (
-              <>
-                <ResponsiveContainer width="100%" height={200}>
-                  <LineChart data={acquisitionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="date"
-                      tickFormatter={(value) => {
-                        const date = new Date(value);
-                        return period === "week"
-                          ? date.toLocaleDateString("en-US", {
-                              weekday: "short",
-                            })
-                          : date.toLocaleDateString("en-US", {
-                              day: "numeric",
-                            });
-                      }}
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="newCustomers"
-                      stroke="#22c55e"
-                      name="New"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="returningCustomers"
-                      stroke="#3b82f6"
-                      name="Returning"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-
-                <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="text-center">
-                    <UserPlus className="h-5 w-5 mx-auto mb-2 text-green-500" />
-                    <div className="text-2xl font-bold">{totalCustomers}</div>
-                    <div className="text-xs text-muted-foreground">New</div>
-                  </div>
-                  <div className="text-center">
-                    <Users className="h-5 w-5 mx-auto mb-2 text-blue-500" />
-                    <div className="text-2xl font-bold">
-                      {returningCustomers}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Returning
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </TabsContent>
-        </Tabs>
+          </>
+        )}
       </CardContent>
     </Card>
   );

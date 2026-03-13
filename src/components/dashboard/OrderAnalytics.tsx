@@ -18,6 +18,7 @@ const COLORS = {
   READY: "#10b981",
   COMPLETED: "#22c55e",
   CANCELLED: "#ef4444",
+  SERVED: "#000000",
 };
 
 export function OrderAnalytics() {
@@ -70,7 +71,7 @@ export function OrderAnalytics() {
                     cy="50%"
                     innerRadius={60}
                     outerRadius={80}
-                    paddingAngle={5}
+                    paddingAngle={1}
                     dataKey="count"
                     nameKey="status"
                   >
