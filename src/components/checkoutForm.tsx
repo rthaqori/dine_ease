@@ -13,7 +13,7 @@ export const CheckoutForm = () => {
     "DINE_IN" | "TAKEAWAY" | "DELIVERY"
   >("DINE_IN");
   const [tableNumber, setTableNumber] = useState("");
-  const [specialInstructions, setSpecialInstructions] = useState("");
+  const [specialInstruction, setSpecialInstruction] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<
     "COD" | "ESEWA" | "KHALTI"
   >("COD");
@@ -23,7 +23,7 @@ export const CheckoutForm = () => {
     orderType,
     tableNumber:
       orderType === "DINE_IN" ? parseInt(tableNumber) || undefined : undefined,
-    specialInstructions,
+    specialInstruction,
     paymentMethod,
     deliveryAddressId,
   };
@@ -97,8 +97,8 @@ export const CheckoutForm = () => {
           Special Instructions (Optional)
         </label>
         <textarea
-          value={specialInstructions}
-          onChange={(e) => setSpecialInstructions(e.target.value)}
+          value={specialInstruction}
+          onChange={(e) => setSpecialInstruction(e.target.value)}
           className="w-full px-4 py-2 border rounded-lg"
           rows={3}
           placeholder="Any special requests or dietary restrictions..."
@@ -109,7 +109,7 @@ export const CheckoutForm = () => {
       <div>
         <h3 className="text-lg font-semibold mb-3">Payment Method</h3>
         <div className="grid grid-cols-2 gap-3">
-          {(["COD", "ESEWA", "KHALTI"] as const).map((method) => (
+          {(["COD", "KHALTI"] as const).map((method) => (
             <button
               key={method}
               type="button"

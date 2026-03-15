@@ -71,6 +71,27 @@ export async function POST(req: Request) {
       );
     }
 
+    // Should check if order can accept payment
+    if (order.paymentStatus === "PAID") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Order already paid",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (order.status === "CANCELLED" || order.status === "COMPLETED") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Order is ${order.status.toLowerCase()}`,
+        },
+        { status: 400 },
+      );
+    }
+
     console.log("✅ Step 3.3: Order found:", {
       orderNumber: order.orderNumber,
       finalAmount: order.finalAmount,
@@ -98,6 +119,7 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
+
     console.log("✅ Step 4.2: No existing paid payment found");
 
     // 3. Check secret key
@@ -178,9 +200,14 @@ export async function POST(req: Request) {
       specialInstructions: order.specialInstructions,
     };
 
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!baseUrl) {
+      throw new Error("NEXT_PUBLIC_APP_URL is not configured");
+    }
+
     const khaltiPayload = {
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/khalti/verify?orderId=${orderId}`,
-      website_url: process.env.NEXT_PUBLIC_APP_URL!,
+      return_url: `${baseUrl}/api/khalti/verify?orderId=${orderId}`,
+      website_url: baseUrl,
       amount: amountInPaisa,
       purchase_order_id: orderId,
       purchase_order_name: `Order #${order.orderNumber}`,

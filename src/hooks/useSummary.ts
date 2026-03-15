@@ -7,7 +7,6 @@ interface CartItemSummary {
   quantity: number;
   imageUrl?: string | null;
   category?: string | null;
-  specialInstructions?: string | null;
   total: number;
   isAvailable: boolean;
 }
@@ -34,6 +33,7 @@ interface DeliveryAddress {
 
 interface CartSummary {
   deliveryAddress: DeliveryAddress;
+  specialInstruction?: string | null;
   itemCount: number;
   subtotal: number;
   vatAmount: number;
@@ -71,6 +71,7 @@ const CART_QUERY_KEY = "cart";
 
 interface FetchCartSummaryPayload {
   addressId?: string;
+  specialInstruction?: string;
   orderType: OrderType;
 }
 

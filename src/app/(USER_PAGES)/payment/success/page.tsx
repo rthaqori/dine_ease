@@ -22,7 +22,10 @@ export default function PaymentSuccessPage() {
           const response = await fetch("/api/khalti/lookup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ pidx: payment.pidx }),
+            body: JSON.stringify({
+              pidx: payment.pidx,
+              orderId: payment.orderId,
+            }),
           });
           const data = await response.json();
           console.log("🔍 Lookup verification:", data);

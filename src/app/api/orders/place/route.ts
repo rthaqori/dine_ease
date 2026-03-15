@@ -2,12 +2,13 @@ import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getUser } from "@/data/user";
+import { CartItem } from "@/types/cart";
 
 interface PlaceOrderRequest {
   orderType?: "DINE_IN" | "TAKEAWAY" | "DELIVERY";
   tableNumber?: number;
   deliveryAddressId?: string;
-  specialInstructions?: string;
+  specialInstruction: string;
   paymentMethod?: "COD" | "ESEWA" | "KHALTI";
 }
 
@@ -118,7 +119,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Fixed tax rate (adjust as needed)
-    const TAX_RATE = 0.08;
+    const TAX_RATE = 0.13;
     const taxAmount = subtotal * TAX_RATE;
     const discountAmount = 0; // You can add discount logic later
     const finalAmount = subtotal + taxAmount - discountAmount;
@@ -135,7 +136,7 @@ export async function POST(request: NextRequest) {
           orderType: body.orderType || "DINE_IN",
           tableNumber: body.tableNumber,
           deliveryAddressId: body.deliveryAddressId,
-          specialInstructions: body.specialInstructions,
+          specialInstructions: body.specialInstruction,
           status: "PENDING",
           paymentStatus: "PENDING",
           paymentMethod: body.paymentMethod,
@@ -149,7 +150,7 @@ export async function POST(request: NextRequest) {
 
       // Create order items
       const orderItems = await Promise.all(
-        cart.items.map(async (cartItem: any) => {
+        cart.items.map(async (cartItem: CartItem) => {
           const orderItem = await tx.orderItem.create({
             data: {
               orderId: newOrder.id,
@@ -157,7 +158,6 @@ export async function POST(request: NextRequest) {
               quantity: cartItem.quantity,
               unitPrice: cartItem.menuItem.price,
               totalPrice: cartItem.quantity * cartItem.menuItem.price,
-              specialInstructions: cartItem.specialInstructions,
             },
           });
 
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
           await tx.orderStationAssignment.create({
             data: {
               orderItemId: orderItem.id,
-              station: cartItem.menuItem.preparationStation,
+              station: cartItem.menuItem.preparationStation!,
               status: "PENDING",
             },
           });
@@ -192,17 +192,17 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // 9. If payment method is not CASH, create payment record
-    if (body.paymentMethod && body.paymentMethod !== "COD") {
-      await db.payment.create({
-        data: {
-          orderId: order.id,
-          amount: order.finalAmount,
-          paymentMethod: body.paymentMethod,
-          status: "PENDING",
-        },
-      });
-    }
+    // // 9. If payment method is not CASH, create payment record
+    // if (body.paymentMethod && body.paymentMethod !== "COD") {
+    //   await db.payment.create({
+    //     data: {
+    //       orderId: order.id,
+    //       amount: order.finalAmount,
+    //       paymentMethod: body.paymentMethod,
+    //       status: "PENDING",
+    //     },
+    //   });
+    // }
 
     // 10. Return success response
     return NextResponse.json(

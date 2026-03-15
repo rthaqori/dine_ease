@@ -15,9 +15,12 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useKhaltiPayment } from "./useKhaltiPayment";
 
 export const usePlaceOrder = () => {
   const queryClient = useQueryClient();
+
+  const { mutate: initiatePayment, isPending } = useKhaltiPayment();
 
   return useMutation<PlaceOrderResponse, Error, PlaceOrderRequest>({
     mutationFn: ordersApis.placeOrder,
@@ -28,6 +31,8 @@ export const usePlaceOrder = () => {
         duration: 5000,
       });
 
+      console.log("order placed response", data);
+
       // Show next steps toast after a delay
       if (data.nextSteps && data.nextSteps.length > 0) {
         setTimeout(() => {
@@ -36,6 +41,13 @@ export const usePlaceOrder = () => {
             duration: 8000,
           });
         }, 1000);
+      }
+
+      const orderId = data.order?.id as string;
+
+      // initiate Khalti payment
+      if (data.paymentInfo?.requiresPayment) {
+        initiatePayment(orderId);
       }
 
       // Invalidate cart queries to clear cache

@@ -9,19 +9,37 @@ const VAT_RATE = 0.13;
 
 export async function POST(request: NextRequest) {
   try {
-    const { addressId, orderType } = await request.json();
+    const { addressId, orderType, specialInstruction } = await request.json();
 
     console.log("AddressId", addressId);
     console.log("OrderType", orderType);
 
-    if (orderType === "DELIVERY" && !addressId) {
+    // Validate order type
+    if (
+      !orderType ||
+      !["DELIVERY", "DINE_IN", "TAKEAWAY"].includes(orderType)
+    ) {
       return NextResponse.json(
         {
           success: false,
-          message: "Address Details is needed for delivery",
+          message:
+            "Valid order type (DELIVERY, DINE_IN, or TAKEAWAY) is required",
         },
         { status: 400 },
       );
+    }
+
+    // Only validate address for delivery orders
+    if (orderType === "DELIVERY") {
+      if (!addressId) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Address is required for delivery orders",
+          },
+          { status: 400 },
+        );
+      }
     }
 
     const cookieStore = await cookies();
@@ -30,6 +48,7 @@ export async function POST(request: NextRequest) {
 
     let cart;
 
+    // Find cart based on user or session
     if (user?.id) {
       cart = await db.cart.findUnique({
         where: { userId: user.id },
@@ -78,16 +97,17 @@ export async function POST(request: NextRequest) {
     if (!cart || cart.items.length === 0) {
       return NextResponse.json({
         success: true,
-        message: cart ? "Your cart is empty" : "Cart not found",
-        cart: cart ? { id: cart.id } : null,
+        message: !cart ? "Cart not found" : "Your cart is empty",
+        cart: null,
         summary: {
           itemCount: 0,
           subtotal: 0,
-          taxAmount: 0,
+          vatAmount: 0,
           discountAmount: 0,
           totalAmount: 0,
           items: [],
           unavailableItems: [],
+          deliveryAddress: null,
         },
       });
     }
@@ -110,28 +130,56 @@ export async function POST(request: NextRequest) {
     const discountAmount = 0; // Implement discount logic
     const totalAmount = subtotal + vatAmount - discountAmount;
 
-    const deliveryAddress = await db.address.findUnique({
-      where: { id: addressId },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        city: true,
-        country: true,
-        state: true,
-        postalCode: true,
-        street: true,
-      },
-    });
+    let deliveryAddress = null;
 
-    if (!deliveryAddress) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Address not found",
-        },
-        { status: 404 },
-      );
+    // Only fetch and validate address for delivery orders
+    if (orderType === "DELIVERY" && addressId) {
+      // Verify address exists and belongs to the user if logged in
+      if (user?.id) {
+        deliveryAddress = await db.address.findFirst({
+          where: {
+            id: addressId,
+            userId: user.id,
+          },
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            city: true,
+            country: true,
+            state: true,
+            postalCode: true,
+            street: true,
+          },
+        });
+      } else {
+        // For guest users, just check if address exists
+        deliveryAddress = await db.address.findUnique({
+          where: { id: addressId },
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            city: true,
+            country: true,
+            state: true,
+            postalCode: true,
+            street: true,
+          },
+        });
+      }
+
+      if (!deliveryAddress) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: user?.id
+              ? "Address not found or doesn't belong to you"
+              : "Address not found",
+          },
+          { status: 404 },
+        );
+      }
     }
 
     const summary = {
@@ -140,7 +188,9 @@ export async function POST(request: NextRequest) {
       vatAmount: roundToTwo(vatAmount),
       discountAmount: roundToTwo(discountAmount),
       totalAmount: roundToTwo(totalAmount),
-      deliveryAddress,
+      orderType,
+      deliveryAddress, // This will be null for DINE_IN and TAKEAWAY
+      specialInstruction,
       items: availableItems.map((item) => ({
         id: item.id,
         menuItemId: item.menuItemId,
@@ -149,7 +199,6 @@ export async function POST(request: NextRequest) {
         quantity: item.quantity,
         imageUrl: item.menuItem.imageUrl,
         category: item.menuItem.category,
-        specialInstructions: item.specialInstructions,
         total: roundToTwo(item.quantity * item.menuItem.price),
         isAvailable: true,
       })),
@@ -157,7 +206,7 @@ export async function POST(request: NextRequest) {
         id: item.id,
         menuItemId: item.menuItemId,
         name: item.menuItem.name,
-        price: item.menuItem.price,
+        price: roundToTwo(item.menuItem.price),
         quantity: item.quantity,
         reason: "Currently unavailable",
       })),
@@ -178,6 +227,27 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Cart summary error:", error);
 
+    // Handle specific error types
+    if (error.name === "PrismaClientKnownRequestError") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Database error occurred",
+        },
+        { status: 500 },
+      );
+    }
+
+    if (error.name === "SyntaxError") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid request format",
+        },
+        { status: 400 },
+      );
+    }
+
     const errorMessage =
       process.env.NODE_ENV === "development"
         ? error.message
@@ -187,7 +257,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         message: "Failed to retrieve cart summary",
-        error: errorMessage,
+        ...(process.env.NODE_ENV === "development" && { error: errorMessage }),
       },
       { status: 500 },
     );

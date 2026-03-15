@@ -13,23 +13,31 @@ import {
   User,
   Shield,
   CheckCircle,
+  Notebook,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { OrderType } from "@/types/enums";
+import { useEffect } from "react";
 
 export default function CartSummaryContent() {
   const searchParams = useSearchParams();
   const orderType = searchParams.get("orderType");
   const deliveryAddressId = searchParams.get("deliveryAddressId");
+  const specialInstruction = searchParams.get("specialInstruction");
 
   if (!orderType) return <div>Error....</div>;
 
-  const { data, isLoading, error } = useCartSummary({
+  const { data, isLoading, error, refetch } = useCartSummary({
     orderType: orderType as OrderType,
     addressId: deliveryAddressId!,
+    specialInstruction: specialInstruction!,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [orderType, deliveryAddressId, specialInstruction]);
 
   console.log("summary data", data);
 
@@ -37,13 +45,12 @@ export default function CartSummaryContent() {
     ? Number(searchParams.get("tableNumber"))
     : undefined;
 
-  const specialInstructions = searchParams.get("specialInstructions");
   const paymentMethod = searchParams.get("paymentMethod");
 
   const orderData = {
     orderType,
     tableNumber: tableNumber ?? undefined,
-    specialInstructions,
+    specialInstruction,
     paymentMethod,
     deliveryAddressId,
   };
@@ -51,7 +58,7 @@ export default function CartSummaryContent() {
   function toPlaceOrderRequest(data: {
     orderType: string | null;
     tableNumber?: number;
-    specialInstructions: string | null;
+    specialInstruction: string | null;
     paymentMethod: string | null;
     deliveryAddressId: string | null;
   }): PlaceOrderRequest {
@@ -65,7 +72,7 @@ export default function CartSummaryContent() {
 
       tableNumber: data.tableNumber,
 
-      specialInstructions: data.specialInstructions ?? undefined,
+      specialInstructions: data.specialInstruction ?? undefined,
 
       paymentMethod:
         data.paymentMethod === "COD" ||
@@ -136,43 +143,65 @@ export default function CartSummaryContent() {
           {/* Left Column - Order Items */}
           <div className="lg:w-2/3 flex flex-col gap-8">
             {/* Order Notes Section */}
-            <div className="bg-white rounded-2xl shadow-sm border p-6">
+            <div
+              className={`bg-white rounded-2xl shadow-sm border p-6 ${!summary.deliveryAddress && !summary.specialInstruction ? "hidden" : ""}`}
+            >
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 Additional Information
               </h2>
               <div className="space-y-4">
-                <div className="flex items-start space-x-3 w-full">
-                  <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
-                  <div className="w-full">
-                    <h3 className="font-medium text-gray-900">
-                      Delivery Address
-                    </h3>
-                    <p className="text-gray-600 mt-1">
-                      {summary.deliveryAddress.street},{" "}
-                      {summary.deliveryAddress.city}
-                      <br />
-                      {summary.deliveryAddress.state},{" "}
-                      {summary.deliveryAddress.postalCode}
-                      <br />
-                      {summary.deliveryAddress.country}
-                    </p>
+                {summary.deliveryAddress && (
+                  <>
+                    <div className="flex items-start space-x-3 w-full">
+                      <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
+                      <div className="w-full">
+                        <h3 className="font-medium text-gray-900">
+                          Delivery Address
+                        </h3>
+                        <p className="text-gray-600 mt-1">
+                          {summary.deliveryAddress.street},{" "}
+                          {summary.deliveryAddress.city}
+                          <br />
+                          {summary.deliveryAddress.state},{" "}
+                          {summary.deliveryAddress.postalCode}
+                          <br />
+                          {summary.deliveryAddress.country}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <User className="h-5 w-5 text-gray-400 mt-0.5" />
+                      <div>
+                        <h3 className="font-medium text-gray-900">
+                          Contact Information
+                        </h3>
+                        <p className="text-gray-600 mt-1">
+                          {summary.deliveryAddress.name}
+                          <br />
+                          +977 {summary.deliveryAddress.phone}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {summary.specialInstruction && (
+                  <div className="flex items-start space-x-3">
+                    <Notebook className="h-5 w-5 text-gray-400 mt-0.5" />
+                    <div>
+                      <h3 className="font-medium text-gray-900">
+                        Special Instruction
+                      </h3>
+                      <div className="text-sm text-gray-600">
+                        <span className="font-medium">Note:</span>{" "}
+                        {summary.specialInstruction}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <User className="h-5 w-5 text-gray-400 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium text-gray-900">
-                      Contact Information
-                    </h3>
-                    <p className="text-gray-600 mt-1">
-                      {summary.deliveryAddress.name}
-                      <br />
-                      +977 {summary.deliveryAddress.phone}
-                    </p>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
+
             <div className="md:bg-white md:rounded-2xl md:shadow-sm md:border md:p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
@@ -238,12 +267,6 @@ export default function CartSummaryContent() {
                             <span className="text-gray-600">Qty:</span>
                             <span className="font-medium">{item.quantity}</span>
                           </div>
-                          {item.specialInstructions && (
-                            <div className="text-sm text-gray-600">
-                              <span className="font-medium">Note:</span>{" "}
-                              {item.specialInstructions}
-                            </div>
-                          )}
                         </div>
                         <div className="text-right">
                           <p className="text-gray-600">

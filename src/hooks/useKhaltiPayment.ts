@@ -53,36 +53,6 @@ interface UseKhaltiPaymentOptions {
   onError?: (error: any) => void;
 }
 
-// export const useKhaltiPayment = (options?: UseKhaltiPaymentOptions) => {
-//   return useMutation<KhaltiInitiateResponse, any, string>({
-//     mutationFn: initiateKhaltiPayment,
-//     retry: (failureCount, error) => {
-//       // Don't retry on 4xx errors
-//       if (error.status >= 400 && error.status < 500) return false;
-//       // Retry up to 2 times for other errors
-//       return failureCount < 2;
-//     },
-//     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-//     onSuccess: (data) => {
-//       if (options?.onSuccess) {
-//         options.onSuccess(data);
-//       }
-
-//       // Auto-redirect to Khalti payment page
-//       if (options?.onSuccessRedirect !== false && data.payment_url) {
-//         window.location.href = data.payment_url;
-//       }
-//     },
-//     onError: (error) => {
-//       console.error("Khalti payment error:", error);
-
-//       if (options?.onError) {
-//         options.onError(error);
-//       }
-//     },
-//   });
-// };
-
 import { useQueryClient } from "@tanstack/react-query";
 
 export const useKhaltiPayment = (options?: UseKhaltiPaymentOptions) => {

@@ -7,7 +7,7 @@ import { getUser } from "@/data/user";
 export default async function Home() {
   const user = await getCurrentUser({ withFullUser: true });
   const cookieUser = await getUser();
-  console.log("cookieUser", cookieUser);
+  console.log("cookieUser", cookieUser, user);
 
   return (
     <div className="h-svh w-svw flex items-center  justify-center flex-col gap-2">
@@ -65,6 +65,14 @@ export default async function Home() {
                     </label>
                     <div className="text-lg font-medium text-gray-800">
                       {user?.email}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-2">
+                      Loyality Points
+                    </label>
+                    <div className="text-lg font-medium text-gray-800">
+                      {user?.loyalityPoints}
                     </div>
                   </div>
                 </div>

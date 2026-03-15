@@ -32,9 +32,17 @@ export interface PlaceOrderResponse {
     items: OrderItemSummary[];
     createdAt: string;
   };
+  paymentInfo: PaymentInfo;
   nextSteps?: string[];
   unavailableItems?: string[];
   error?: string;
+}
+
+interface PaymentInfo {
+  requiresPayment: boolean;
+  paymentMethod: PaymentMethod;
+  amount: number;
+  initiatePayment: boolean;
 }
 
 export interface OrderItem {
